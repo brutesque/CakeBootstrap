@@ -1,0 +1,6 @@
+[submodule "webroot/bootstrap"]
+	path = webroot/bootstrap
+	url = https://github.com/twbs/bootstrap.git
+[submodule "webroot/select2"]
+	path = webroot/select2
+	url = https://github.com/ivaynberg/select2.git
