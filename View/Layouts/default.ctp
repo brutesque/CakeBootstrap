@@ -59,9 +59,11 @@ $body = ( Configure::check('navbar.menus') ? $this->Bootstrap->navbar(
 		)
 	) . '
 <script>
-	$(document).ready(function() {
+	$(function() {
 		$(".select2").select2();
-		$(".datepicker").datepicker()
+		$(".datepicker").datepicker({
+			format: "yyyy-mm-dd"
+		});
 	});
 </script>
 <style>
