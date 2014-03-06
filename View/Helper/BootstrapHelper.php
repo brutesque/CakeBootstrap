@@ -11,27 +11,29 @@ class BootstrapHelper extends AppHelper {
 
 
 	public function __construct(View $view, $settings = array()) {
-        parent::__construct($view, $settings);
-        $this->settings = Hash::merge(
+        $settings = Hash::merge(
         	array(
 /*         		'theme' => false */
 /*         		'theme' => 'CakeBootstrap./bootstrap/css/bootstrap-theme.min' */
-/*         		'theme' => 'CakeBootstrap./bootswatch/css/amelia.bootstrap.min' */
-/*         		'theme' => 'CakeBootstrap./bootswatch/css/cerulean.bootstrap.min' */
-/*         		'theme' => 'CakeBootstrap./bootswatch/css/cosmo.bootstrap.min' */
-/*         		'theme' => 'CakeBootstrap./bootswatch/css/cyborg.bootstrap.min' */
-/*         		'theme' => 'CakeBootstrap./bootswatch/css/flatly.bootstrap.min' */
-/*         		'theme' => 'CakeBootstrap./bootswatch/css/journal.bootstrap.min' */
-/*         		'theme' => 'CakeBootstrap./bootswatch/css/readable.bootstrap.min' */
-/*         		'theme' => 'CakeBootstrap./bootswatch/css/simplex.bootstrap.min' */
-/*         		'theme' => 'CakeBootstrap./bootswatch/css/slate.bootstrap.min' */
-/*         		'theme' => 'CakeBootstrap./bootswatch/css/spacelab.bootstrap.min' */
-/*         		'theme' => 'CakeBootstrap./bootswatch/css/united.bootstrap.min' */
-/*         		'theme' => 'CakeBootstrap./bootswatch/css/yeti.bootstrap.min' */
+/*         		'theme' => 'CakeBootstrap./bootswatch/amelia/bootstrap.min' */
+/*         		'theme' => 'CakeBootstrap./bootswatch/cerulean/bootstrap.min' */
+/*         		'theme' => 'CakeBootstrap./bootswatch/cosmo/bootstrap.min' */
+/*         		'theme' => 'CakeBootstrap./bootswatch/cyborg/bootstrap.min' */
+/*         		'theme' => 'CakeBootstrap./bootswatch/flatly/bootstrap.min' */
+/*         		'theme' => 'CakeBootstrap./bootswatch/journal/bootstrap.min' */
+/*         		'theme' => 'CakeBootstrap./bootswatch/lumen/bootstrap.min' */
+/*         		'theme' => 'CakeBootstrap./bootswatch/readable/bootstrap.min' */
+/*         		'theme' => 'CakeBootstrap./bootswatch/simplex/bootstrap.min' */
+/*         		'theme' => 'CakeBootstrap./bootswatch/slate/bootstrap.min' */
+/*         		'theme' => 'CakeBootstrap./bootswatch/spacelab/bootstrap.min' */
+/*         		'theme' => 'CakeBootstrap./bootswatch/superhero/bootstrap.min' */
+/*         		'theme' => 'CakeBootstrap./bootswatch/united/bootstrap.min' */
+/*         		'theme' => 'CakeBootstrap./bootswatch/yeti/bootstrap.min' */
 
         	), 
         	$settings
         );
+        parent::__construct($view, $settings);
     }
 
 

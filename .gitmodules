@@ -4,3 +4,6 @@
 [submodule "webroot/select2"]
 	path = webroot/select2
 	url = https://github.com/ivaynberg/select2.git
+[submodule "webroot/bootswatch"]
+	path = webroot/bootswatch
+	url = https://github.com/thomaspark/bootswatch.git
