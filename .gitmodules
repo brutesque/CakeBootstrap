@@ -7,3 +7,6 @@
 [submodule "webroot/bootswatch"]
 	path = webroot/bootswatch
 	url = https://github.com/thomaspark/bootswatch.git
+[submodule "webroot/bootstrap-datepicker"]
+	path = webroot/bootstrap-datepicker
+	url = https://github.com/eternicode/bootstrap-datepicker.git

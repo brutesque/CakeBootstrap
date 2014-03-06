@@ -9,11 +9,13 @@ $head = '<meta charset="utf-8">' .
 	$this->Html->css(array_filter(array(
 		'CakeBootstrap./bootstrap/dist/css/bootstrap.min', 
 		( isset($this->Bootstrap->settings['theme']) ? $this->Bootstrap->settings['theme'] : '' ), 
-		'CakeBootstrap./select2/select2'
+		'CakeBootstrap./select2/select2', 
+		'CakeBootstrap./bootstrap-datepicker/css/datepicker'
 	)), null, array('inline' => false, 'media' => 'screen')) . $this->Html->script(array(
 		'//code.jquery.com/jquery.js', 
 		'CakeBootstrap./bootstrap/dist/js/bootstrap.min', 
 		'CakeBootstrap./select2/select2', 
+		'CakeBootstrap./bootstrap-datepicker/js/bootstrap-datepicker'
 	), array('inline' => false, 'block' => 'script', 'once' => true)) . 
 	$this->Html->tag(
 		'title', 
@@ -59,6 +61,7 @@ $body = ( Configure::check('navbar.menus') ? $this->Bootstrap->navbar(
 <script>
 	$(document).ready(function() {
 		$(".select2").select2();
+		$(".datepicker").datepicker()
 	});
 </script>
 <style>
