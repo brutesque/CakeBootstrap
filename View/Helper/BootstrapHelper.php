@@ -489,7 +489,8 @@ class BootstrapHelper extends AppHelper {
 				'size' => $params['size'], 
 				'model' => $params['model'], 
 				'class' => false, 
-				'height' => false // false, sm or lg
+				'height' => false,  // false, sm or lg
+				'hidden' => false
 			), 
 			$input
 		);
@@ -596,7 +597,8 @@ class BootstrapHelper extends AppHelper {
 			$html = $this->Html->div(
 				implode(' ', array_filter(array(
 					( ($input['type'] == 'checkbox') && !$params['horizontal'] ? 'checkbox' : ( $input['size'] ? $this->parseSizeToClass( $input['size'] ) : 'form-group' ) ), 
-					( $input['color'] ? ('has-' . $input['color']) : null )
+					( $input['color'] ? ('has-' . $input['color']) : null ), 
+					( $input['hidden'] ? 'hidden' : null )
 				))), 
 				$html
 			);
@@ -1449,7 +1451,7 @@ class BootstrapHelper extends AppHelper {
 			array(
 				'brand' => false, 
 				'url' => '#', 
-				'type' => false,  // fixed, static 
+				'type' => false,  // fixed, static, container
 				'position' => 'top', // top, bottom
 				'color' => 'default' // default, inverse
 			), 
@@ -1552,6 +1554,9 @@ class BootstrapHelper extends AppHelper {
 				'role' => 'navigation'
 			)
 		);
+		if ( $params['type'] === 'container' ) {
+			$html = $this->container($html);
+		}
 
 		return $html;
 	}
