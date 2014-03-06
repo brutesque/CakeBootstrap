@@ -379,10 +379,22 @@ class BootstrapHelper extends AppHelper {
 	}
 	
 	private function _fields( $fields, $params = array(), $options = array() ) {
-		$fields = array_merge(array(
-		), $fields);
-		$options = array_merge(array(
-		), $options);
+		$fields = array_merge(
+			array(
+			), 
+			$fields
+		);
+		$params = array_merge(
+			array(
+			), 
+			$params
+		);
+		
+		$options = array_merge(
+			array(
+			), 
+			$options
+		);
 		
 		$html = '';
 		
@@ -401,16 +413,20 @@ class BootstrapHelper extends AppHelper {
 			}
 			
 		}
-			
+
 		$html = $this->Html->div(
-			'input-group', 
+			implode (' ', array_filter(array(
+				'input-group', 
+				( isset($params['height']) ? ( 'input-group' . '-' . $params['height'] ) : null ), 
+				( isset($options['class']) ? $options['class'] : null )
+			))), 
 			$html
 		);
 		
 		return $html;
 	}
 
-	private function _field( $input = array(), $params = array(), $options = array() ) {
+	private function _field ( $input = array(), $params = array(), $options = array() ) {
 		$input = array_merge(
 			array(
 				'field' => uniqid(), 
@@ -421,8 +437,9 @@ class BootstrapHelper extends AppHelper {
 				'empty' => null, 
 				'multiple' => false, 
 				'rows' => null, 
-				'height' => false, // false, lg or sm
-				'model' => ( isset($params['model']) ? $params['model'] : false )
+				'class' => false, 
+				'height' => false,  // false, lg or sm
+				'model' => false
 			), 
 			$input
 		);
@@ -434,7 +451,8 @@ class BootstrapHelper extends AppHelper {
 				'div' => false, 
 				'class' => implode(' ', array(
 					( !in_array($input['type'], array('checkbox', 'file', 'radio')) ? 'form-control' : false ), 
-					( $input['height'] ? ('input-' . $input['height']) : false )
+					( $input['height'] ? ('input-' . $input['height']) : false ), 
+					( $input['class'] ? $input['class'] : false )
 				)), 
 				'disabled' => ( $input['disabled'] ? true : false ), 
 				'options' => $input['options'], 
@@ -447,7 +465,7 @@ class BootstrapHelper extends AppHelper {
 
 		$html = '';
 		$html .= $this->Form->input(
-			( isset($input['model']) ? ( $input['model'] . '.' ) : '' ) . $input['field'] , 
+			( $input['model'] ? ($input['model'] . '.') : '' ) . $input['field'], 
 			$options
 		);
 		
@@ -469,7 +487,9 @@ class BootstrapHelper extends AppHelper {
 				'help' => false, 
 				'color' => false,  // success, warning, danger
 				'size' => $params['size'], 
-				'model' => $params['model']
+				'model' => $params['model'], 
+				'class' => false, 
+				'height' => false // false, sm or lg
 			), 
 			$input
 		);
@@ -498,8 +518,8 @@ class BootstrapHelper extends AppHelper {
 		if ( !($params['ignore'] && in_array($input['field'], $params['ignore'])) ) {
 			if ( !$params['inline'] && ($input['type'] !== 'checkbox') ) {
 				$html .= $this->Form->label(
-					( !is_array($input['field']) ? ( $input['model'] . '.' . $input['field'] ) : null ), 
-					( !empty($input['label']) ? $input['label'] : null ), 
+					( !is_array($input['field']) ? ( ( $input['model'] ? ( $input['model'] . '.' ) : '' ) . $input['field'] ) : null ), 
+					( !is_array($input['field']) ? $input['label'] : (!empty($input['label']) ? $input['label'] : null ) ), 
 					array(
 						'class' => implode(' ', array_filter(array(
 							( $params['inline'] ? 'sr-only' : null ), 
@@ -515,9 +535,12 @@ class BootstrapHelper extends AppHelper {
 					$input['field'], 
 					array_merge(
 						array(
-							'model' => $input['model']
+							'height' => $input['height']
 						), 
 						$params
+					), 
+					array(
+						'class' => ( isset($input['class']) ? $input['class'] : false )
 					)
 				);
 			} else {
@@ -665,8 +688,7 @@ class BootstrapHelper extends AppHelper {
 				'size' => false, 
 				'ignore' => false, 
 				'role' => 'form', 
-				'right' => false, 
-				'height' => false
+				'right' => false
 			), 
 			$params
 		);
@@ -693,8 +715,7 @@ class BootstrapHelper extends AppHelper {
 				'horizontal' => $params['horizontal'], 
 				'inline' => ($params['inline']||$params['navbar-form']), 
 				'size' => $params['size'], 
-				'labelSize' => $params['labelSize'], 
-				'height' => $params['height']
+				'labelSize' => $params['labelSize']
 			)
 		);
 
