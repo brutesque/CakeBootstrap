@@ -2006,9 +2006,24 @@ class BootstrapHelper extends AppHelper {
 							)
 						)
 					);
+				} elseif ($this->startsWith($key, 'heading')) {
+					$html .= $this->Html->div(
+						( 'panel-' . 'heading' ), 
+						$value
+					);
 				} elseif ($this->startsWith($key, 'body')) {
 					$html .= $this->Html->div(
 						( 'panel-' . 'body' ), 
+						$value
+					);
+				} elseif ($this->startsWith($key, 'content')) {
+					$html .= $this->Html->div(
+						( 'panel-' . 'content' ), 
+						$value
+					);
+				} elseif ($this->startsWith($key, 'footer')) {
+					$html .= $this->Html->div(
+						( 'panel-' . 'footer' ), 
 						$value
 					);
 				} elseif (!is_numeric($key)) {

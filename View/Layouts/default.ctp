@@ -9,6 +9,7 @@ $head = '<meta charset="utf-8">' .
 	$this->Html->css(array_filter(array(
 		'CakeBootstrap./bootstrap/dist/css/bootstrap.min', 
 		( isset($this->Bootstrap->settings['theme']) ? $this->Bootstrap->settings['theme'] : '' ), 
+		'CakeBootstrap.cake-bootstrap', 
 		'CakeBootstrap./select2/select2', 
 		'CakeBootstrap./bootstrap-datepicker/css/datepicker'
 	)), null, array('inline' => false, 'media' => 'screen')) . $this->Html->script(array(
