@@ -222,7 +222,8 @@ class BootstrapHelper extends AppHelper {
 		$params = array_merge(
 			array(
 				'type' => 'unordered', // unordered, ordered, unstyled, inline, description, horizontal-description
-				'nestedlist' => false
+				'nestedlist' => false, 
+				'humanize' => false
 			), 
 			$params
 		);
@@ -272,10 +273,10 @@ class BootstrapHelper extends AppHelper {
 		} else {
 			foreach ($content as $key => $value) {
 				if (is_array($value)) {
-					$html .= $this->Html->tag('dt', $key) . 
+					$html .= $this->Html->tag('dt', ( $params['humanize'] ? Inflector::humanize($key) : $key ) ) . 
 					$this->Html->tag('dd', $this->lists($value, $params, $options));
 				} else {
-					$html .= $this->Html->tag('dt', $key) . 
+					$html .= $this->Html->tag('dt', ( $params['humanize'] ? Inflector::humanize($key) : $key ) ) . 
 					$this->Html->tag('dd', ( !empty($value) ? $value : '&nbsp;' ));
 				}
 			}
