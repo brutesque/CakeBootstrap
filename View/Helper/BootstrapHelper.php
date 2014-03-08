@@ -873,6 +873,13 @@ class BootstrapHelper extends AppHelper {
 			), 
 			$params
 		);
+		$options = array_merge(
+			array(
+				'class' => null
+			),
+			$options
+		);
+		
 		
 		$html = '';
 		
@@ -1215,6 +1222,12 @@ class BootstrapHelper extends AppHelper {
 			), 
 			$params
 		);
+		$options = array_merge(
+			array(
+				'class' => false
+			), 
+			$options
+		);
 		
 		$html = '';
 		
@@ -1231,7 +1244,8 @@ class BootstrapHelper extends AppHelper {
 			implode(' ', array_filter(array(
 				( 'btn-group' . ( $params['vertical'] ? '-vertical' : null ) ), 
 				( $params['size'] ? ( 'btn-group-' . $params['size'] ) : null ), 
-				( $params['justified'] ? ( 'btn-group-justified' ) : null )
+				( $params['justified'] ? ( 'btn-group-justified' ) : null ), 
+				$options['class']
 			))), 
 			$html, 
 			$options
