@@ -518,7 +518,7 @@ class BootstrapHelper extends AppHelper {
 
 		$html = '';
 		if ( !($params['ignore'] && in_array($input['field'], $params['ignore'])) ) {
-			if ( !$params['inline'] && ($input['type'] !== 'checkbox') ) {
+			if ( !$params['inline'] && ($input['type'] !== 'checkbox') && ( $input['label'] !== false ) ) {
 				$html .= $this->Form->label(
 					( !is_array($input['field']) ? ( ( $input['model'] ? ( $input['model'] . '.' ) : '' ) . $input['field'] ) : null ), 
 					( !is_array($input['field']) ? $input['label'] : (!empty($input['label']) ? $input['label'] : null ) ), 
