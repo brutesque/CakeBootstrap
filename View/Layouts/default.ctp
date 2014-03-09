@@ -9,14 +9,17 @@ $head = '<meta charset="utf-8">' .
 	$this->Html->css(array_filter(array(
 		'CakeBootstrap./bootstrap/dist/css/bootstrap.min', 
 		( isset($this->Bootstrap->settings['theme']) ? $this->Bootstrap->settings['theme'] : '' ), 
-		'CakeBootstrap.cake-bootstrap', 
 		'CakeBootstrap./select2/select2', 
 		'CakeBootstrap./bootstrap-datepicker/css/datepicker'
+		'CakeBootstrap.cake-bootstrap', 
 	)), null, array('inline' => false, 'media' => 'screen')) . $this->Html->script(array(
 		'//code.jquery.com/jquery.js', 
 		'CakeBootstrap./bootstrap/dist/js/bootstrap.min', 
 		'CakeBootstrap./select2/select2', 
-		'CakeBootstrap./bootstrap-datepicker/js/bootstrap-datepicker'
+		'CakeBootstrap./bootstrap-datepicker/js/bootstrap-datepicker', 
+		'CakeBootstrap./bootstrap-switch/build/js/bootstrap-switch.min', 
+		'CakeBootstrap./autosize/jquery.autosize.min', 
+		'CakeBootstrap.cake-bootstrap'
 	), array('inline' => false, 'block' => 'script', 'once' => true)) . 
 	$this->Html->tag(
 		'title', 
@@ -58,31 +61,7 @@ $body = ( Configure::check('navbar.menus') ? $this->Bootstrap->navbar(
 			'onDomReady' =>  true, 
 			'safe' => true
 		)
-	) . '
-<script>
-	$(function() {
-		$(".select2").select2();
-		$(".datepicker").datepicker({
-			format: "yyyy-mm-dd"
-		});
-	});
-</script>
-<style>
-.select2-container {
-	height: auto;
-	padding: 0px;
-}
-ul.select2-choices {
-	border-radius: 4px !important;
-/* 	margin: 5px !important; */
-/* 	padding: 5px !important; */
-	border: 0 !important;
-}
-li.select2-search-choice {
-	margin: 5px 0px 0px 5px !important;
-}
-</style>
-';
+	);
 
 
 

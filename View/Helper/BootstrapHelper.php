@@ -440,10 +440,23 @@ class BootstrapHelper extends AppHelper {
 				'rows' => null, 
 				'class' => false, 
 				'height' => false,  // false, lg or sm
-				'model' => false
+				'model' => false, 
+				'data' => false
 			), 
 			$input
 		);
+		$optionsData = array();
+		if ($input['data'] && is_array($input['data'])) {
+			foreach ($input['data'] as $key => $optionData) {
+/*
+				pr($key);
+				pr($optionData);
+*/
+				$optionsData['data-' . $key] = $optionData;
+			}
+		}
+/* 		pr($optionsData); */
+		
 		$options = array_merge(
 			array(
 				'placeholder' => $input['placeholder'], 
@@ -461,6 +474,7 @@ class BootstrapHelper extends AppHelper {
 				'multiple' => $input['multiple'], 
 				'rows' => $input['rows']
 			), 
+			$optionsData, 
 			$options
 		);
 
@@ -480,7 +494,7 @@ class BootstrapHelper extends AppHelper {
 				'field' => $input
 			);
 		}
-		$input = array_merge(
+		$input = Hash::merge(
 			array(
 				'field' => '', 
 				'type' => null, 
@@ -491,7 +505,8 @@ class BootstrapHelper extends AppHelper {
 				'model' => $params['model'], 
 				'class' => false, 
 				'height' => false,  // false, sm or lg
-				'hidden' => false
+				'hidden' => false, 
+				'data' => false
 			), 
 			$input
 		);
@@ -501,7 +516,7 @@ class BootstrapHelper extends AppHelper {
 				'size' => false, 
 				'inline' => false, 
 				'horizontal' => false, 
-				'ignore' => false, 
+				'ignore' => false
 /* 				'model' => $input['model'] */
 			), 
 			$params
@@ -541,8 +556,10 @@ class BootstrapHelper extends AppHelper {
 						), 
 						$params
 					), 
-					array(
-						'class' => ( isset($input['class']) ? $input['class'] : false )
+					array_merge(
+						array(
+							'class' => ( isset($input['class']) ? $input['class'] : false )
+						)
 					)
 				);
 			} else {
@@ -1167,6 +1184,13 @@ class BootstrapHelper extends AppHelper {
 				'data-dismiss' => $params['data-dismiss']
 			)
 		);
+		
+		return $html;
+	}
+
+	public function right ( $content ) {
+
+		$html = $this->Html->tag('span', $content, array('class' => 'pull-right'));
 		
 		return $html;
 	}

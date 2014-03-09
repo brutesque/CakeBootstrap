@@ -1,3 +1,4 @@
+/* panel-content */
 .panel-content {
 /*     padding: 15px */
 }
@@ -74,4 +75,19 @@
 
 .panel-content:after {
     clear: both
+}
+
+/* select2 */
+.select2-container {
+	height: auto;
+	padding: 0px;
+}
+ul.select2-choices {
+	border-radius: 4px !important;
+/* 	margin: 5px !important; */
+/* 	padding: 5px !important; */
+	border: 0 !important;
+}
+li.select2-search-choice {
+	margin: 5px 0px 0px 5px !important;
 }

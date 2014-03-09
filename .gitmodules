@@ -10,3 +10,9 @@
 [submodule "webroot/bootstrap-datepicker"]
 	path = webroot/bootstrap-datepicker
 	url = https://github.com/eternicode/bootstrap-datepicker.git
+[submodule "webroot/bootstrap-switch"]
+	path = webroot/bootstrap-switch
+	url = https://github.com/nostalgiaz/bootstrap-switch.git
+[submodule "webroot/autosize"]
+	path = webroot/autosize
+	url = https://github.com/jackmoore/autosize.git
