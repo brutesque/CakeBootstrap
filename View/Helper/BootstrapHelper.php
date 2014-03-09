@@ -129,7 +129,8 @@ class BootstrapHelper extends AppHelper {
 				'align' => false, // left, center, right
 				'color' => false, // muted, primary, success, info, warning, danger
 				'wrap' => false, 
-				'pre-scrollable' => false
+				'pre-scrollable' => false, 
+				'pre-height' => false
 			), 
 			$params
 		);
@@ -176,6 +177,9 @@ class BootstrapHelper extends AppHelper {
 				$options['class'] = implode(' ', array_filter(array(
 					($params['pre-scrollable']?'pre-scrollable':null), 
 					(isset($options['class'])?$options['class']:null)
+				)));
+				if ($params['pre-height']) $options['style'] = $this->Html->style(array_filter(array(
+					'height' => $params['pre-height']
 				)));
 				break;
 			default:
