@@ -179,7 +179,7 @@ class BootstrapHelper extends AppHelper {
 					(isset($options['class'])?$options['class']:null)
 				)));
 				if ($params['pre-height']) $options['style'] = $this->Html->style(array_filter(array(
-					'height' => $params['pre-height']
+					'max-height' => $params['pre-height']
 				)));
 				break;
 			default:
