@@ -33,6 +33,7 @@ class BootstrapHelper extends AppHelper {
         	), 
         	$settings
         );
+
         parent::__construct($view, $settings);
     }
 
@@ -1670,11 +1671,20 @@ class BootstrapHelper extends AppHelper {
 	}
 	
 	public function badge ( $badge = '', $params = array(), $options = array() ) {
-	
+		$params = array_merge(
+			array(
+				'pull-right' => false
+			), 
+			$params
+		);
 		$options = array_merge(
 			$options, 
 			array(
-				'class' => 'badge'
+				'class' => implode(' ', array_filter(array(
+					'badge', 
+					( isset($options['class']) ? $options['class'] : null ), 
+					( $params['pull-right'] ? 'pull-right' : null )
+				)))
 			)
 		);
 		
