@@ -10,8 +10,8 @@ $head = '<meta charset="utf-8">' .
 		'CakeBootstrap./bootstrap/dist/css/bootstrap.min', 
 		( isset($this->Bootstrap->settings['theme']) ? $this->Bootstrap->settings['theme'] : '' ), 
 		'CakeBootstrap./select2/select2', 
-		'CakeBootstrap./bootstrap-datepicker/css/datepicker'
-		'CakeBootstrap.cake-bootstrap', 
+		'CakeBootstrap./bootstrap-datepicker/css/datepicker', 
+		'CakeBootstrap.cake-bootstrap'
 	)), null, array('inline' => false, 'media' => 'screen')) . $this->Html->script(array(
 		'//code.jquery.com/jquery.js', 
 		'CakeBootstrap./bootstrap/dist/js/bootstrap.min', 
