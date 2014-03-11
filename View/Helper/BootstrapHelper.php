@@ -488,7 +488,6 @@ class BootstrapHelper extends AppHelper {
 			$options
 		);
 		
-		
 		return $html;
 	}
 
