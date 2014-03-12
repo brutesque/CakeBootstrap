@@ -890,15 +890,21 @@ class BootstrapHelper extends AppHelper {
 		$params = array_merge(
 			array(
 				'size' => false,  // xs, sm, md or lg
-				'navbar-btn' => false
+				'navbar-btn' => false, 
+				'pull-right' => false
 			), 
 			$params
 		);
 		$options = array_merge(
 			array(
-				'class' => null
-			),
-			$options
+			), 
+			$options, 
+			array(
+				'class' => implode(' ', array_filter(array(
+					( isset($options['class']) ? $options['class'] : null), 
+					( $params['pull-right'] ? 'pull-right' : null )
+				)))
+			)
 		);
 		
 		
@@ -913,7 +919,7 @@ class BootstrapHelper extends AppHelper {
 			$buttonsArr[] = $this->button($button);
 		}
 		
-		$html = (!empty($buttonsArr) ? implode(' ', $buttonsArr) : $html );
+		$html = (!empty($buttonsArr) ? $this->Html->tag( 'span', implode(' ', $buttonsArr), $options ) : $html );
 
 		return $html;
 	}
@@ -1286,7 +1292,8 @@ class BootstrapHelper extends AppHelper {
 		
 		$options = array_merge(
 			array(
-				'role' => 'toolbar'
+				'role' => 'toolbar', 
+				'class' => false
 			), 
 			$options
 		);
@@ -1297,7 +1304,10 @@ class BootstrapHelper extends AppHelper {
 		}
 		
 		$html = $this->Html->div(
-			'btn-toolbar', 
+			implode(' ', array_filter(array(
+				'btn-toolbar', 
+				$options['class']
+			))), 
 			$html, 
 			$options
 		);
@@ -1500,7 +1510,7 @@ class BootstrapHelper extends AppHelper {
 			), 
 			$params
 		);
-		
+
 		if ( ($params['type'] === 'fixed') && ($params['position'] === 'top') ) {
 			$this->bodyParams['padding-top'] = '70px';
 		} elseif ( ($params['type'] === 'fixed') && ($params['position'] === 'bottom') ) {
