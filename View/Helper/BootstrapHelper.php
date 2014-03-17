@@ -912,11 +912,13 @@ class BootstrapHelper extends AppHelper {
 		
 		$buttonArr = array();
 		foreach ($buttons as $button) {
-			$button = array_merge(
-				$params, 
-				$button
-			);
-			$buttonsArr[] = $this->button($button);
+			if ($button) {
+				$button = array_merge(
+					$params, 
+					$button
+				);
+				$buttonsArr[] = $this->button($button);
+			}
 		}
 		
 		$html = (!empty($buttonsArr) ? $this->Html->tag( 'span', implode(' ', $buttonsArr), $options ) : $html );
@@ -925,6 +927,7 @@ class BootstrapHelper extends AppHelper {
 	}
 
 	public function button ( $button ) {
+		$button = (array)$button;
 		$button = array_merge(
 			array(
 				'label' => '', 
