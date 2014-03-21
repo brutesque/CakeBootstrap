@@ -505,7 +505,7 @@ class BootstrapHelper extends AppHelper {
 				'label' => null, 
 				'help' => false, 
 				'color' => false,  // success, warning, danger
-				'size' => $params['size'], 
+				'size' => (isset($params['size']) ? $params['size'] : false), 
 				'model' => $params['model'], 
 				'class' => false, 
 				'height' => false,  // false, sm or lg
