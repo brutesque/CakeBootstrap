@@ -508,7 +508,7 @@ class BootstrapHelper extends AppHelper {
 				'help' => false, 
 				'color' => false,  // success, warning, danger
 				'size' => (isset($params['size']) ? $params['size'] : false), 
-				'model' => $params['model'], 
+				'model' => (isset($params['model']) ? $params['model'] : false), 
 				'class' => false, 
 				'height' => false,  // false, sm or lg
 				'hidden' => false, 
@@ -668,7 +668,7 @@ class BootstrapHelper extends AppHelper {
 		return $html;
 	}
 	
-	public function formend ($buttons, $params = array(), $options = array()) {
+	public function formend ($buttons = false, $params = array(), $options = array()) {
 		$html = null;
 		$params = array_merge(
 			array(
