@@ -446,7 +446,8 @@ class BootstrapHelper extends AppHelper {
 				'class' => false, 
 				'height' => false,  // false, lg or sm
 				'model' => false, 
-				'data' => false
+				'data' => false, 
+				'value' => null
 			), 
 			$input
 		);
@@ -477,7 +478,8 @@ class BootstrapHelper extends AppHelper {
 				'options' => $input['options'], 
 				'empty' => $input['empty'], 
 				'multiple' => $input['multiple'], 
-				'rows' => $input['rows']
+				'rows' => $input['rows'], 
+				'value' => $input['value']
 			), 
 			$optionsData, 
 			$options
