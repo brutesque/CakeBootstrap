@@ -95,7 +95,8 @@ class BootstrapHelper extends AppHelper {
 		$params = array_merge(
 			array(
 				'size' => 12, 
-				'offset' => 0
+				'offset' => 0, 
+				'class' => false
 			),
 			$params
 		);
@@ -113,7 +114,10 @@ class BootstrapHelper extends AppHelper {
 			}
 		} else {
 			$html = $this->Html->div(
-				$sizeClasses, 
+				implode(' ', array_filter(array(
+					( $params['class'] ? $params['class'] : null ), 
+					$sizeClasses
+				))), 
 				$content, 
 				$options
 			);
