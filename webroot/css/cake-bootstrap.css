@@ -1,6 +1,6 @@
 /* panel-content */
-.panel-content {
-/*     padding: 15px */
+.panel-content > * {
+	margin-bottom: 0px;
 }
 
 .panel>.panel-content+.table, .panel>.panel-content+.table-responsive {
