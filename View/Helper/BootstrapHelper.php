@@ -1460,6 +1460,19 @@ class BootstrapHelper extends AppHelper {
 		
 		$html = $this->Html->tag(
 			'nav', 
+/*
+			$this->row(
+				$this->col(
+					$this->image(
+						'http://placehold.it/1000x100'
+					), 
+					array(
+						'size' => array(12, 12, 12, 12), 
+						'offset' => array(0, 0, 0, 0)
+					)
+				)
+			) . 
+*/
 			$this->Html->div(
 				'navbar-header', 
 				$this->navbarToggle('navbar-collapse') . 
