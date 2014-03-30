@@ -445,7 +445,7 @@ class BootstrapHelper extends AppHelper {
 				'disabled' => false, 
 				'options' => null, 
 				'empty' => null, 
-				'multiple' => false, 
+				'multiple' => null, 
 				'rows' => null, 
 				'class' => false, 
 				'height' => false,  // false, lg or sm

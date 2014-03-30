@@ -71,7 +71,6 @@ echo $this->Bootstrap->row(
 		) . $this->Bootstrap->br()
 	)
 );
-
 echo $this->Bootstrap->row(
 	$this->Bootstrap->col(
 		$this->Bootstrap->panel(
