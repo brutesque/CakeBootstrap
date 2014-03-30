@@ -1467,8 +1467,8 @@ class BootstrapHelper extends AppHelper {
 						'http://placehold.it/1000x100'
 					), 
 					array(
-						'size' => array(12, 12, 12, 12), 
-						'offset' => array(0, 0, 0, 0)
+						'size' => array(12, 12, 8, 6), 
+						'offset' => array(0, 0, 0, 3)
 					)
 				)
 			) . 
