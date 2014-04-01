@@ -13,7 +13,10 @@ $head = '<meta charset="utf-8">' .
 		'CakeBootstrap./bootstrap-datepicker/css/datepicker', 
 		'CakeBootstrap.cake-bootstrap'
 	)), null, array('inline' => false, 'media' => 'screen')) . $this->Html->script(array(
-		'//code.jquery.com/jquery.js', 
+/* 		'//code.jquery.com/jquery.js',  */
+		'CakeBootstrap./jquery-ui/jquery-1.11.0.min', 
+		'CakeBootstrap./jquery-ui/ui/minified/jquery-ui.min', 
+
 		'CakeBootstrap./bootstrap/dist/js/bootstrap.min', 
 		'CakeBootstrap./select2/select2', 
 		'CakeBootstrap./bootstrap-datepicker/js/bootstrap-datepicker', 
