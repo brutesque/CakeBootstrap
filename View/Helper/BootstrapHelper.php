@@ -38,6 +38,46 @@ class BootstrapHelper extends AppHelper {
     }
 
 
+	public function beforeLayout($layoutFile = null) {
+		$this->Html->css(
+			array_filter(
+				array(
+					'CakeBootstrap./bootstrap/dist/css/bootstrap.min', 
+					( isset($this->settings['theme']) ? $this->settings['theme'] : '' ), 
+					'CakeBootstrap./select2/select2', 
+					'CakeBootstrap./bootstrap-datepicker/css/datepicker', 
+					'CakeBootstrap./bootstrap-switch/build/css/bootstrap3/bootstrap-switch.min', 
+
+					'CakeBootstrap.cake-bootstrap'
+				)
+			), 
+			null, 
+			array(
+				'inline' => false, 
+				'media' => 'screen'
+			)
+		);
+		$this->Html->script(
+			array(
+				'CakeBootstrap./jquery-ui/jquery-1.11.0.min', 
+				'CakeBootstrap./jquery-ui/ui/minified/jquery-ui.min', 
+		
+				'CakeBootstrap./bootstrap/dist/js/bootstrap.min', 
+				'CakeBootstrap./select2/select2', 
+				'CakeBootstrap./bootstrap-datepicker/js/bootstrap-datepicker', 
+				'CakeBootstrap./bootstrap-switch/build/js/bootstrap-switch.min', 
+				'CakeBootstrap./autosize/jquery.autosize.min', 
+
+				'CakeBootstrap.cake-bootstrap'
+			), 
+			array(
+				'inline' => false, 
+				'block' => 'script', 
+				'once' => true
+			)
+		);
+	}
+
 	//	Containers
 	//	Easily center a page's contents by wrapping its contents in a .container. 
 	//	Containers set max-width at various media query breakpoints to match our grid system.	
