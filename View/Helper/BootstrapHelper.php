@@ -2020,6 +2020,11 @@ class BootstrapHelper extends AppHelper {
 						( 'panel-' . 'footer' ), 
 						$value
 					);
+				} elseif ($this->startsWith($key, 'overlay')) {
+					$html .= $this->Html->div(
+						( 'panel-' . 'overlay' ), 
+						$value
+					);
 				} elseif (!is_numeric($key)) {
 					$html .= $this->Html->div(
 						( 'panel-' . $key ), 
