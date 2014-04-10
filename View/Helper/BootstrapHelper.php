@@ -865,7 +865,8 @@ class BootstrapHelper extends AppHelper {
 				'role' => 'button', 
 				'type' => 'button', 
 				'navbar-btn' => false, 
-				'target' => false
+				'target' => false, 
+				'class' => null
 			), 
 			$button
 		);
@@ -899,6 +900,7 @@ class BootstrapHelper extends AppHelper {
 				'role' => $button['role'], 
 				'tabindex' => ( ($button['role'] == 'menuitem') ? '-1' : false ), 
 				'class' => implode(' ', array_filter(array(
+					$button['class'], 
 					( ($button['role'] !== 'menuitem') ? 'btn' : null ), 
 					( ($button['role'] !== 'menuitem') ? ( 'btn-' . $button['color'] ) : null ), 
 					( $button['size'] ? ( 'btn-' . $button['size'] ) : null ), 
@@ -1982,6 +1984,13 @@ class BootstrapHelper extends AppHelper {
 			), 
 			$params
 		);
+		$options = array_merge(
+			array(
+				'class' => null
+			), 
+			$options
+		);
+
 	
 		$html = '';
 		
@@ -2044,12 +2053,13 @@ class BootstrapHelper extends AppHelper {
 		$html = $this->Html->div(
 			implode(' ', array_filter(array(
 				'panel', 
-				'panel-' . $params['color']
+				'panel-' . $params['color'], 
+				$options['class'] 
 			))), 
 			$html, 
 			$options
 		);
-		
+
 		return $html;
 	}
 
