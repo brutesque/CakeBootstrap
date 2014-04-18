@@ -1165,13 +1165,20 @@ class BootstrapHelper extends AppHelper {
 	// Components
 	public function icon ($icon) {
 		if (!empty($icon)) {
-			$html = $this->Html->tag(
-				'span', 
-				'', 
-				array(
-					'class' => ( 'glyphicon glyphicon-' . $icon )
-				)
-			);
+			if (is_array($icon)) {
+				foreach ($icon as $value) {
+					$iconHtmlArr[] = $this->icon($value);
+				}
+				$html = implode(' ', array_filter($iconHtmlArr));
+			} else  {
+				$html = $this->Html->tag(
+					'span', 
+					'', 
+					array(
+						'class' => ( 'glyphicon glyphicon-' . $icon )
+					)
+				);
+			}
 		} else {
 			$html = '';
 		}
@@ -1643,11 +1650,14 @@ class BootstrapHelper extends AppHelper {
 			)
 		);
 		
-		$html = $this->Html->tag(
-			'span',
-			$badge,  
-			$options
-		);
+		$html = '';
+		if (!empty($badge)) {
+			$html = $this->Html->tag(
+				'span',
+				$badge,  
+				$options
+			);
+		}
 		
 		return $html;
 	}
