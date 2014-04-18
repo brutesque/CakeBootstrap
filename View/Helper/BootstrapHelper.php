@@ -123,8 +123,18 @@ class BootstrapHelper extends AppHelper {
 	}
 
 	public function row ( $content = null, $params = array(), $options = array() ) {
+		$params = array_merge(
+			array(
+				'class' => null
+			), 
+			(array)$params
+		);
+		
 		$html = $this->Html->div(
-			'row', 
+			implode(' ', array_filter(array(
+				'row', 
+				$params['class']
+			))), 
 			$content, 
 			$options
 		);
