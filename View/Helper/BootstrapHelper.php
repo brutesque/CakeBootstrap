@@ -46,7 +46,7 @@ class BootstrapHelper extends AppHelper {
 					( isset($this->settings['theme']) ? $this->settings['theme'] : '' ), 
 					'CakeBootstrap./select2/select2', 
 					'CakeBootstrap./bootstrap-datepicker/css/datepicker', 
-					'CakeBootstrap./bootstrap-switch/build/css/bootstrap3/bootstrap-switch.min', 
+					'CakeBootstrap./bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min', 
 
 					'CakeBootstrap.cake-bootstrap'
 				)
@@ -65,7 +65,7 @@ class BootstrapHelper extends AppHelper {
 				'CakeBootstrap./bootstrap/dist/js/bootstrap.min', 
 				'CakeBootstrap./select2/select2', 
 				'CakeBootstrap./bootstrap-datepicker/js/bootstrap-datepicker', 
-				'CakeBootstrap./bootstrap-switch/build/js/bootstrap-switch.min', 
+				'CakeBootstrap./bootstrap-switch/dist/js/bootstrap-switch.min', 
 				'CakeBootstrap./autosize/jquery.autosize.min', 
 
 				'CakeBootstrap.cake-bootstrap'
