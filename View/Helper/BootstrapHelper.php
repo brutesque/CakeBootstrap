@@ -165,8 +165,9 @@ class BootstrapHelper extends AppHelper {
 		} else {
 			$html = $this->Html->div(
 				implode(' ', array_filter(array(
-					( $params['class'] ? $params['class'] : null ), 
-					$sizeClasses
+					$sizeClasses, 
+					'column', 
+					( $params['class'] ? $params['class'] : null )
 				))), 
 				$content, 
 				$options
@@ -1204,25 +1205,34 @@ class BootstrapHelper extends AppHelper {
 		
 		$html = '';
 		
-		$buttonArr = array();
+		$buttonsArr = array();
 		foreach ($buttons as $button) {
-			if ($params['justified']) {
-				$button['tag'] = 'a';
+			if (!empty($button)) {
+				if ($params['justified']) {
+					$button['tag'] = 'a';
+				}
+				$buttonsArr[] = $this->button(
+					array_merge(
+						(array)$params, 
+						(array)$button
+					)
+				);
 			}
-			$buttonsArr[] = $this->button($button);
 		}
-		$html = implode(' ', $buttonsArr);
-
-		$html = $this->Html->div(
-			implode(' ', array_filter(array(
-				( 'btn-group' . ( $params['vertical'] ? '-vertical' : null ) ), 
-				( $params['size'] ? ( 'btn-group-' . $params['size'] ) : null ), 
-				( $params['justified'] ? ( 'btn-group-justified' ) : null ), 
-				$options['class']
-			))), 
-			$html, 
-			$options
-		);
+		if (!empty($buttonsArr)) {
+			$html = implode(' ', $buttonsArr);
+	
+			$html = $this->Html->div(
+				implode(' ', array_filter(array(
+					( 'btn-group' . ( $params['vertical'] ? '-vertical' : null ) ), 
+					( $params['size'] ? ( 'btn-group-' . $params['size'] ) : null ), 
+					( $params['justified'] ? ( 'btn-group-justified' ) : null ), 
+					$options['class']
+				))), 
+				$html, 
+				$options
+			);
+		}
 		
 		return $html;
 	}
@@ -1234,12 +1244,14 @@ class BootstrapHelper extends AppHelper {
 				'role' => 'toolbar', 
 				'class' => false
 			), 
-			$options
+			(array)$options
 		);
 		
 		$html = '';
 		foreach ($buttonGroups as $buttons) {
-			$html .= $this->buttonGroup($buttons);
+			if (!empty($buttons)) {
+				$html .= $this->buttonGroup($buttons, $params);
+			}
 		}
 		
 		$html = $this->Html->div(
@@ -1613,19 +1625,26 @@ class BootstrapHelper extends AppHelper {
 			array(
 				'color' => 'default'
 			), 
-			$params
+			(array)$params
 		);
+		$options = array_merge(
+			(array)$options, 
+			array(
+				'class' => implode(' ', array_filter(array(
+					'label', 
+					( 'label-' . $params['color'] ), 
+					( isset($options['class']) ? $options['class'] : null )
+				)))
+			)
+		);
+		
+		
 		$html = '';
 		if ($content) {
 			$html .= $this->Html->tag(
 				'span', 
 				$content, 
-				array(
-					'class' => implode(' ', array_filter(array(
-						'label', 
-						( 'label-' . $params['color'] )
-					)))
-				)
+				$options
 			);
 		}
 		
@@ -2002,13 +2021,13 @@ class BootstrapHelper extends AppHelper {
 			array(
 				'color' => 'default'
 			), 
-			$params
+			(array)$params
 		);
 		$options = array_merge(
 			array(
 				'class' => null
 			), 
-			$options
+			(array)$options
 		);
 
 	
@@ -2016,51 +2035,53 @@ class BootstrapHelper extends AppHelper {
 		
 		if (is_array($content)) {
 			foreach ( $content as $key => $value ) {
-				if ($key === 'title') {
-					$html .= $this->Html->div(
-						'panel-heading', 
-						$this->typo(
-							$value, 
-							array(
-								'type' => 'h3'
-							), 
-							array(
-								'class' => 'panel-title'
+				if ($value !== null) {
+					if ($key === 'title') {
+						$html .= $this->Html->div(
+							'panel-heading', 
+							$this->typo(
+								$value, 
+								array(
+									'type' => 'h3'
+								), 
+								array(
+									'class' => 'panel-title'
+								)
 							)
-						)
-					);
-				} elseif ($this->startsWith($key, 'heading')) {
-					$html .= $this->Html->div(
-						( 'panel-' . 'heading' ), 
-						$value
-					);
-				} elseif ($this->startsWith($key, 'body')) {
-					$html .= $this->Html->div(
-						( 'panel-' . 'body' ), 
-						$value
-					);
-				} elseif ($this->startsWith($key, 'content')) {
-					$html .= $this->Html->div(
-						( 'panel-' . 'content' ), 
-						$value
-					);
-				} elseif ($this->startsWith($key, 'footer')) {
-					$html .= $this->Html->div(
-						( 'panel-' . 'footer' ), 
-						$value
-					);
-				} elseif ($this->startsWith($key, 'overlay')) {
-					$html .= $this->Html->div(
-						( 'panel-' . 'overlay' ), 
-						$value
-					);
-				} elseif (!is_numeric($key)) {
-					$html .= $this->Html->div(
-						( 'panel-' . $key ), 
-						$value
-					);
-				} else {
-					$html .= $value;
+						);
+					} elseif ($this->startsWith($key, 'heading')) {
+						$html .= $this->Html->div(
+							( 'panel-' . 'heading' ), 
+							$value
+						);
+					} elseif ($this->startsWith($key, 'body')) {
+						$html .= $this->Html->div(
+							( 'panel-' . 'body' ), 
+							$value
+						);
+					} elseif ($this->startsWith($key, 'content')) {
+						$html .= $this->Html->div(
+							( 'panel-' . 'content' ), 
+							$value
+						);
+					} elseif ($this->startsWith($key, 'footer')) {
+						$html .= $this->Html->div(
+							( 'panel-' . 'footer' ), 
+							$value
+						);
+					} elseif ($this->startsWith($key, 'overlay')) {
+						$html .= $this->Html->div(
+							( 'panel-' . 'overlay' ), 
+							$value
+						);
+					} elseif (!is_numeric($key)) {
+						$html .= $this->Html->div(
+							( 'panel-' . $key ), 
+							$value
+						);
+					} else {
+						$html .= $value;
+					}
 				}
 			}
 		} else {
