@@ -67,6 +67,7 @@ class BootstrapHelper extends AppHelper {
 				'CakeBootstrap./bootstrap-datepicker/js/bootstrap-datepicker', 
 				'CakeBootstrap./bootstrap-switch/dist/js/bootstrap-switch.min', 
 				'CakeBootstrap./autosize/jquery.autosize.min', 
+				'CakeBootstrap./jquery-ui-touch-punch/jquery.ui.touch-punch.min', 
 
 				'CakeBootstrap.cake-bootstrap'
 			), 
