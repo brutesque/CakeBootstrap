@@ -16,3 +16,6 @@
 [submodule "webroot/autosize"]
 	path = webroot/autosize
 	url = https://github.com/jackmoore/autosize.git
+[submodule "webroot/jquery-ui-touch-punch"]
+	path = webroot/jquery-ui-touch-punch
+	url = https://github.com/furf/jquery-ui-touch-punch.git
