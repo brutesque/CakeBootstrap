@@ -815,18 +815,19 @@ class BootstrapHelper extends AppHelper {
 	} 
 
 	public function buttons ( $buttons, $params = array(), $options = array() ) {
+		$buttons = (array)$buttons;
 		$params = array_merge(
 			array(
 				'size' => false,  // xs, sm, md or lg
 				'navbar-btn' => false, 
 				'pull-right' => false
 			), 
-			$params
+			(array)$params
 		);
 		$options = array_merge(
 			array(
 			), 
-			$options, 
+			(array)$options, 
 			array(
 				'class' => implode(' ', array_filter(array(
 					( isset($options['class']) ? $options['class'] : null), 
