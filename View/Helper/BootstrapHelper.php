@@ -59,15 +59,15 @@ class BootstrapHelper extends AppHelper {
 		);
 		$this->Html->script(
 			array(
-				'CakeBootstrap./jquery-ui/jquery-1.11.0.min', 
-				'CakeBootstrap./jquery-ui/ui/minified/jquery-ui.min', 
+				'CakeBootstrap./jquery/jquery-2.1.1.min', 
+				'CakeBootstrap./jquery-ui-1.10.4/js/jquery-ui-1.10.4.min', 
 		
 				'CakeBootstrap./bootstrap/dist/js/bootstrap.min', 
+				'CakeBootstrap./autosize/jquery.autosize.min', 
+				'CakeBootstrap./jquery-ui-touch-punch/jquery.ui.touch-punch.min', 
 				'CakeBootstrap./select2/select2', 
 				'CakeBootstrap./bootstrap-datepicker/js/bootstrap-datepicker', 
 				'CakeBootstrap./bootstrap-switch/dist/js/bootstrap-switch.min', 
-				'CakeBootstrap./autosize/jquery.autosize.min', 
-				'CakeBootstrap./jquery-ui-touch-punch/jquery.ui.touch-punch.min', 
 
 				'CakeBootstrap.cake-bootstrap'
 			), 
@@ -96,7 +96,7 @@ class BootstrapHelper extends AppHelper {
 	//	Responsive images
 	//	Images in Bootstrap 3 can be made responsive-friendly via the addition of the .img-responsive class. 
 	//	This applies max-width: 100%; and height: auto; to the image so that it scales nicely to the parent element.
-	public function image ( $path, $params = array(), $options = array() ) {
+	public function image ( $path = null, $params = array(), $options = array() ) {
 		$params = array_merge(
 			array(
 				'responsive' => true, 
@@ -105,6 +105,9 @@ class BootstrapHelper extends AppHelper {
 			), 
 			$params
 		);
+		if ($path === null) {
+			$path = 'CakeBootstrap.placeholder-100x100.jpg';
+		}
 		
 		$options['class'] = implode(' ', array_filter(array(
 			(isset($options['class'])?$options['class']:null), 
@@ -115,10 +118,14 @@ class BootstrapHelper extends AppHelper {
 			'width' => '100%'
 		)):false);
 
-		$html = $this->Html->image(
-			$path, 
-			$options
-		);
+		if ($path !== false) {
+			$html = $this->Html->image(
+				$path, 
+				$options
+			);
+		} else {
+			$html = '';
+		}
 		
 		return $html;
 	}
@@ -159,8 +166,14 @@ class BootstrapHelper extends AppHelper {
 				$contentChunkArr = (array)$contentChunk;
 				$html .= $this->col(
 					(isset($contentChunkArr[0])?$contentChunkArr[0]:null), 
-					(isset($contentChunkArr[1])?$contentChunkArr[1]:$params), 
-					(isset($contentChunkArr[2])?$contentChunkArr[2]:$options)
+					array_merge(
+						$params, 
+						(isset($contentChunkArr[1])?$contentChunkArr[1]:array())
+					), 
+					array_merge(
+						$options, 
+						(isset($contentChunkArr[1])?$contentChunkArr[1]:array())
+					)
 				);
 			}
 		} else {
