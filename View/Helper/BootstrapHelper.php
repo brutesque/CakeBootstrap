@@ -2142,6 +2142,7 @@ class BootstrapHelper extends AppHelper {
 	public function modal ( $content, $params = array(), $options = array() ) {
 		$params = array_merge(
 			array(
+				'size' => false, // lg, sm
 				'fade' => true
 			), 
 			$params
@@ -2170,7 +2171,10 @@ class BootstrapHelper extends AppHelper {
 				( $params['fade'] ? 'fade' : null )
 			))), 
 			$this->Html->div(
-				'modal-dialog', 
+				implode(' ', array_filter(array(
+					'modal-dialog', 
+					( $params['size'] ? 'modal-' . $params['size'] : null )
+				))), 
 				$this->Html->div(
 					'modal-content', 
 					$html
