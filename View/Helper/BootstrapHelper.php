@@ -1983,8 +1983,18 @@ class BootstrapHelper extends AppHelper {
 		return $html;
 	}
 
-	public function listGroup ( $content ) {
+	public function listGroup ( $content, $options = array() ) {
 		$content = (array)$content;
+		$options = array_merge(
+			array(
+				'class' => false
+			), 
+			$options
+		);
+		$options['class'] = implode(' ', array_filter(array(
+			'list-group', 
+			($options['class'] ? $options['class'] : null)
+		)));
 	
 		$html = '';
 		
@@ -2022,9 +2032,7 @@ class BootstrapHelper extends AppHelper {
 		$html = $this->Html->tag(
 			'div', 
 			$html, 
-			array(
-				'class' => 'list-group'
-			)
+			$options
 		);
 	
 		return $html;
