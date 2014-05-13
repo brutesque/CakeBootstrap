@@ -2886,6 +2886,24 @@ echo $this->Bootstrap->row(
 echo $this->Bootstrap->row($this->Bootstrap->col($this->Bootstrap->pageheader('List group')));
 echo $this->Bootstrap->row(
 	$this->Bootstrap->col(
+		$this->Bootstrap->typo(
+			'
+$this->Bootstrap->listGroup(
+	array(
+		\'Cras justo odio\', 
+		\'Dapibus ac facilisis in\', 
+		\'Morbi leo risus\', 
+		\'Porta ac consectetur ac\', 
+		\'Vestibulum at eros\'
+	)
+);
+			', 
+			array('type' => 'pre', 'pre-scrollable' => true)
+		)
+	)
+);
+echo $this->Bootstrap->row(
+	$this->Bootstrap->col(
 		array(
 			array(
 				$this->Bootstrap->listGroup(
@@ -2897,7 +2915,41 @@ echo $this->Bootstrap->row(
 						'Vestibulum at eros'
 					)
 				)
-			), 
+			)
+		), 
+		array(
+			'size' => 3
+		)
+	)
+);
+echo $this->Bootstrap->row(
+	$this->Bootstrap->col(
+		$this->Bootstrap->typo(
+			'
+$this->Bootstrap->listGroup(
+	array(
+		array(
+			\'label\' => \'Cras justo odio\', 
+			\'badge\' => 14
+		), 
+		array(
+			\'label\' => \'Dapibus ac facilisis in\', 
+			\'badge\' => 2
+		), 
+		array(
+			\'label\' => \'Morbi leo risus\', 
+			\'badge\' => 1
+		)
+	)
+);
+			', 
+			array('type' => 'pre', 'pre-scrollable' => true)
+		)
+	)
+);
+echo $this->Bootstrap->row(
+	$this->Bootstrap->col(
+		array(
 			array(
 				$this->Bootstrap->listGroup(
 					array(
@@ -2915,7 +2967,51 @@ echo $this->Bootstrap->row(
 						)
 					)
 				)
-			), 
+			)
+		), 
+		array(
+			'size' => 3
+		)
+	)
+);
+echo $this->Bootstrap->row(
+	$this->Bootstrap->col(
+		$this->Bootstrap->typo(
+			'
+$this->Bootstrap->listGroup(
+	array(
+		array(
+			\'label\' => \'Cras justo odio\', 
+			\'url\' => \'#\', 
+			\'active\' => true
+		), 
+		array(
+			\'label\' => \'Dapibus ac facilisis in\', 
+			\'url\' => \'#\', 
+			\'badge\' => \'New\'
+		), 
+		array(
+			\'label\' => \'Morbi leo risus\', 
+			\'url\' => \'#\'
+		), 
+		array(
+			\'label\' => \'Porta ac consectetur ac\', 
+			\'url\' => \'#\'
+		), 
+		array(
+			\'label\' => \'Vestibulum at eros\', 
+			\'url\' => \'#\'
+		)
+	)
+);
+			', 
+			array('type' => 'pre', 'pre-scrollable' => true)
+		)
+	)
+);
+echo $this->Bootstrap->row(
+	$this->Bootstrap->col(
+		array(
 			array(
 				$this->Bootstrap->listGroup(
 					array(
@@ -2943,7 +3039,87 @@ echo $this->Bootstrap->row(
 						)
 					)
 				)
+			)
+		), 
+		array(
+			'size' => 3
+		)
+	)
+);
+echo $this->Bootstrap->row(
+	$this->Bootstrap->col(
+		$this->Bootstrap->typo(
+			'
+$this->Bootstrap->listGroup(
+	array(
+		array(
+			\'label\' => $this->Bootstrap->typo(
+				\'List group item heading\', 
+				array(
+					\'type\' => \'h4\'
+				), 
+				array(
+					\'class\' => \'list-group-item-heading\'
+				)
+			) . 
+			$this->Bootstrap->typo(
+				\'Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.\', 
+				array(), 
+				array(
+					\'class\' => \'list-group-item-text\'
+				)
 			), 
+			\'url\' => \'#\', 
+			\'active\' => true
+		), 
+		array(
+			\'label\' => $this->Bootstrap->typo(
+				\'List group item heading\', 
+				array(
+					\'type\' => \'h4\'
+				), 
+				array(
+					\'class\' => \'list-group-item-heading\'
+				)
+			) . 
+			$this->Bootstrap->typo(
+				\'Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.\', 
+				array(), 
+				array(
+					\'class\' => \'list-group-item-text\'
+					)
+				), 
+			\'url\' => \'#\'
+		), 
+		array(
+			\'label\' => $this->Bootstrap->typo(
+				\'List group item heading\', 
+				array(
+					\'type\' => \'h4\'
+				), 
+				array(
+					\'class\' => \'list-group-item-heading\'
+				)
+			) . 
+			$this->Bootstrap->typo(
+				\'Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.\', 
+				array(), 
+				array(
+					\'class\' => \'list-group-item-text\'
+				)
+			), 
+			\'url\' => \'#\'
+		)
+	)
+)
+			', 
+			array('type' => 'pre', 'pre-scrollable' => true)
+		)
+	)
+);
+echo $this->Bootstrap->row(
+	$this->Bootstrap->col(
+		array(
 			array(
 				$this->Bootstrap->listGroup(
 					array(
