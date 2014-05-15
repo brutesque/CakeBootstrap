@@ -44,9 +44,6 @@ class Select2Component extends Component {
 	    		$record_id = null;
 		    	if(!is_numeric($value) && !empty($value)) {
 
-		    		$slug = Inflector::slug($value, '-');
-					$url_friendly_value = strtolower($slug);
-
 		    		$modelRecord = $model->$assocModel->find('first', array(
 		    			'conditions' => array(
 		    				$options['field'] => $value
@@ -96,6 +93,5 @@ class Select2Component extends Component {
 
 		return $model->request->data;
 	}
-
 
 }
