@@ -27,7 +27,8 @@ class Select2Component extends Component {
 			array(
 				'model' => false, 
 				'separator' => ',', 
-				'field' => 'label'
+				'field' => 'label', 
+				'defaultFields' => false
 			), 
 			$options
 		);
@@ -58,9 +59,12 @@ class Select2Component extends Component {
 			    	} else {
 
 				    	$newRecords[] = array(
-				    		$assocModel => array(
-				    			$options['field'] => $value
-				    		)
+				    		$assocModel => array_merge(
+					    		array(
+					    			$options['field'] => $value
+					    		), 
+					    		( $options['defaultFields'] ? $options['defaultFields'] : array() )
+					    	)
 				    	);
 
 			    	}
