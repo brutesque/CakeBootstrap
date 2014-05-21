@@ -2221,6 +2221,11 @@ class BootstrapHelper extends AppHelper {
 				} elseif (empty($param)) {
 					$size = 12;
 				}
+				if (intval($size) === 0) {
+					$size = 1;
+				} elseif (intval($size) >= 12) {
+					$size = 12;
+				}
 				$stepClass = ('col-' . $sizeStep . '-' . $size);
 				$sizeClasses[] = $stepClass;
 				$i++;
