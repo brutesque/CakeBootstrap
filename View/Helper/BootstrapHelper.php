@@ -2221,7 +2221,7 @@ class BootstrapHelper extends AppHelper {
 				} elseif (empty($param)) {
 					$size = 12;
 				}
-				if (intval($size) === 0) {
+				if (intval($size) <= 0) {
 					$size = 1;
 				} elseif (intval($size) >= 12) {
 					$size = 12;
@@ -2247,6 +2247,11 @@ class BootstrapHelper extends AppHelper {
 				} elseif (is_integer($offset)) {
 					$size = $offset;
 				} elseif (empty($offset)) {
+					$size = 12;
+				}
+				if (intval($size) <= 0) {
+					$size = 0;
+				} elseif (intval($size) >= 12) {
 					$size = 12;
 				}
 				$stepClass = ('col-' . $sizeStep . '-offset-' . $size);
