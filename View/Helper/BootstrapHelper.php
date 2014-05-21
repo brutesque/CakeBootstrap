@@ -2222,7 +2222,7 @@ class BootstrapHelper extends AppHelper {
 					$size = 12;
 				}
 				if (intval($size) <= 0) {
-					$size = 1;
+					$size = 12;
 				} elseif (intval($size) >= 12) {
 					$size = 12;
 				}
