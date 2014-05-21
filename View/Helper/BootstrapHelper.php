@@ -477,10 +477,10 @@ class BootstrapHelper extends AppHelper {
 
 			if (is_array($field)) {
 				$fieldHtml = $this->_field($field, $params);
-				if (in_array($field['type'], array(
+				if ( isset($field['type']) && in_array($field['type'], array(
 					'checkbox', 
 					'radio'
-				))) {
+				)) ) {
 					$fieldHtml = $this->Html->tag(
 						'span', 
 						$fieldHtml, 
@@ -1996,10 +1996,18 @@ class BootstrapHelper extends AppHelper {
 		return $html;
 	}
 
-	public function listGroup ( $content, $options = array() ) {
+	public function listGroup ( $content, $params = array(), $options = array() ) {
 		$content = (array)$content;
+		$params = array_merge(
+			array(
+				'sortable' => false, 
+				'postUrl' => false
+			), 
+			$params
+		);
 		$options = array_merge(
 			array(
+				'id' => ( 'sortable' . uniqid() ), 
 				'class' => false
 			), 
 			$options
@@ -2024,6 +2032,7 @@ class BootstrapHelper extends AppHelper {
 					$value['label'], 
 					$value['url'], 
 					array(
+						'id' => ( isset($value['id']) ? $value['id'] : null ), 
 						'escape' => false, 
 						'class' => implode(' ', array_filter(array(
 							'list-group-item', 
@@ -2037,6 +2046,7 @@ class BootstrapHelper extends AppHelper {
 					( isset($value['badge']) ? $this->badge($value['badge']) : null ) . 
 					(isset($value['icon']) ? ($this->icon($value['icon']) . ' ') : null ) . $value['label'], 
 					array(
+						'id' => ( isset($value['id']) ? $value['id'] : null ), 
 						'class' => 'list-group-item'
 					)
 				);
@@ -2047,7 +2057,53 @@ class BootstrapHelper extends AppHelper {
 			$html, 
 			$options
 		);
+
+		if ($params['sortable']) {
+			$html .= $this->Html->scriptBlock(
+				'
+					$(document).ready(function() {
+			
+						$( "#' . $options['id'] . '" ).sortable({
+							handle: ".sortable-handle", 
+/* 							toleranceElement: "div",  */
+					        distance: 1, 
+							cursor: "move", 
+					        containment: "parent", 
+					        revert: false, 
+/* 					        items: " > .column", */
+/* 					        opacity: 0.5,  */
+/* 					        tolerance: "pointer", */
+							start: function(event, ui) {            
+								ui.item.addClass("dragging");
+							},
+							change: function(event, ui) {
+							},
+							stop: function(event, ui) { 
+								ui.item.removeClass("dragging");
+								var order = $( "#' . $options['id'] . '" ).sortable("toArray");
+								$( "#' . $options['id'] . '" ).val( order );
+								var order = $( "#' . $options['id'] . '" ).sortable("toArray");
+								' . ( $params['postUrl'] ? '$.ajax({
+									type: "POST", 
+									url: "' . $this->Html->url($params['postUrl']) . '", 
+									data: { order: order }
+								}).done(function( msg ) {
+/* 									alert(msg); */
+								});' : null ) . '
+							}
+						}).disableSelection();
 	
+					});
+			
+	
+				', 
+				array(
+					'inline' => false, 
+					'block' => 'elementScript'
+				)
+			);
+		}
+		
 		return $html;
 	}
 	
