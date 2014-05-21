@@ -10,7 +10,7 @@ class BootstrapHelper extends AppHelper {
 	private $bodyParams = array();
 
 
-	public function __construct(View $view, $settings = array()) {
+	public function __construct (View $view, $settings = array()) {
         $settings = Hash::merge(
         	array(
 /*         		'theme' => false */
@@ -38,7 +38,7 @@ class BootstrapHelper extends AppHelper {
     }
 
 
-	public function beforeLayout($layoutFile = null) {
+	public function beforeLayout ($layoutFile = null) {
 		$this->Html->css(
 			array_filter(
 				array(
@@ -453,7 +453,7 @@ class BootstrapHelper extends AppHelper {
 		return $html;
 	}
 	
-	private function _fields( $fields, $params = array(), $options = array() ) {
+	private function _fields ( $fields, $params = array(), $options = array() ) {
 		$fields = array_merge(
 			array(
 			), 
@@ -474,9 +474,22 @@ class BootstrapHelper extends AppHelper {
 		$html = '';
 		
 		foreach ( $fields as $field ) {
-			
+
 			if (is_array($field)) {
-				$html .= $this->_field($field, $params);
+				$fieldHtml = $this->_field($field, $params);
+				if (in_array($field['type'], array(
+					'checkbox', 
+					'radio'
+				))) {
+					$fieldHtml = $this->Html->tag(
+						'span', 
+						$fieldHtml, 
+						array(
+							'class' => 'input-group-addon'
+						)
+					);
+				}
+				$html .= $fieldHtml;
 			} else {
 				$html .= $this->Html->tag(
 					'span', 
@@ -665,7 +678,7 @@ class BootstrapHelper extends AppHelper {
 						array()
 					)
 				);
-			}elseif ($input['type'] == 'checkbox') {
+			} elseif ($input['type'] == 'checkbox') {
 				$html .= $this->Form->label(
 					$input['model'] . '.' . $input['field'], 
 					$inputHtml . ' ' . $input['label'], 
@@ -2312,7 +2325,7 @@ class BootstrapHelper extends AppHelper {
 		);
 	}
 	
-	private function startsWith($haystack, $needle) {
+	private function startsWith ($haystack, $needle) {
 		return $needle === "" || strpos($haystack, $needle) === 0;
 	}
 
