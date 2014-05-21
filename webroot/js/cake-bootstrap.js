@@ -12,7 +12,7 @@ $( document ).ajaxComplete(function(event, xhr, settings) {
 
 function uiTools() {
 
-	$('textarea').autosize();
+	$('textarea.autosize').autosize();
 	$(".select2").select2();
 	$(".datepicker").datepicker({
 		format: "yyyy-mm-dd", 
