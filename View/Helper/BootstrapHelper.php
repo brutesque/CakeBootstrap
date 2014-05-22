@@ -2068,7 +2068,7 @@ class BootstrapHelper extends AppHelper {
 /* 							toleranceElement: "div",  */
 					        distance: 1, 
 							cursor: "move", 
-					        containment: "parent", 
+/* 					        containment: "parent",  */
 					        revert: false, 
 /* 					        items: " > .column", */
 /* 					        opacity: 0.5,  */
