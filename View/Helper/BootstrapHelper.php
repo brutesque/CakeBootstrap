@@ -401,7 +401,7 @@ class BootstrapHelper extends AppHelper {
 						if (is_array($cellValue)) {
 							$cellsHtml .= (!in_array($cellKey, array('rowcolor'))?$this->Html->tag(
 								'td', 
-								$cellValue[0], 
+								reset($cellValue), 
 								array(
 									'class' => (isset($cellValue[1]['cellcolor'])?$cellValue[1]['cellcolor']:false)
 								)
@@ -796,7 +796,8 @@ class BootstrapHelper extends AppHelper {
 				'size' => false, 
 				'ignore' => false, 
 				'role' => 'form', 
-				'right' => false
+				'right' => false, 
+				'disabled' => false
 			), 
 			$params
 		);
@@ -823,12 +824,13 @@ class BootstrapHelper extends AppHelper {
 				'horizontal' => $params['horizontal'], 
 				'inline' => ($params['inline']||$params['navbar-form']), 
 				'size' => $params['size'], 
-				'labelSize' => $params['labelSize']
+				'labelSize' => $params['labelSize'], 
+				'disabled' => $params['disabled']
 			)
 		);
 
 		$html .= $this->formend(
-			$params['buttons'] ? $params['buttons'] : array(
+			( $params['buttons'] !== false ) ? $params['buttons'] : array(
 				array(
 					'label' => 'Submit', 
 					'tag' => 'submit', 
@@ -1441,7 +1443,7 @@ class BootstrapHelper extends AppHelper {
 				'li', 
 				$this->Html->link(
 					( isset($value['icon']) ? ($this->icon($value['icon']) . ' ') : '' ) . 
-					$value['label'] . 
+					( isset($value['label']) ? $value['label'] : '' ) . 
 					( $value['dropdown'] ? ( '&nbsp;' . $this->caret() ) : null), 
 					$value['url'], 
 					array(
@@ -1483,6 +1485,10 @@ class BootstrapHelper extends AppHelper {
 			array(
 				'brand' => false, 
 				'url' => '#', 
+				'image' => false, 
+				'image-size' => array(12, 12, 12, 12), 
+				'image-offset' => array(0, 0, 0, 0), 
+/* 				'image' => false,  */
 				'type' => false,  // fixed, static, container
 				'position' => 'top', // top, bottom
 				'color' => 'default' // default, inverse
@@ -1559,19 +1565,17 @@ class BootstrapHelper extends AppHelper {
 		
 		$html = $this->Html->tag(
 			'nav', 
-/*
-			$this->row(
+			( $params['image'] ? $this->row(
 				$this->col(
 					$this->image(
-						'http://placehold.it/1000x100'
+						$params['image']
 					), 
 					array(
-						'size' => array(12, 12, 8, 6), 
-						'offset' => array(0, 0, 0, 3)
+						'size' => $params['image-size'], 
+						'offset' => $params['image-offset']
 					)
 				)
-			) . 
-*/
+			) : '' ) . 
 			$this->Html->div(
 				'navbar-header', 
 				$this->navbarToggle('navbar-collapse') . 
