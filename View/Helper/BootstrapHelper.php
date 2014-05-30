@@ -1588,11 +1588,9 @@ class BootstrapHelper extends AppHelper {
 					array(
 						'class' => 'navbar-brand', 
 						'escape' => false, 
-/*
 						'style' => $this->Html->style(array(
 							'height' => 'auto'
 						))
-*/
 					)
 				) : '' )
 			) . 
