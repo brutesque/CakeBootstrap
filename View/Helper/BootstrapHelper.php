@@ -1486,8 +1486,9 @@ class BootstrapHelper extends AppHelper {
 				'brand' => false, 
 				'url' => '#', 
 				'image' => false, 
-				'image-size' => array(12, 12, 12, 12), 
-				'image-offset' => array(0, 0, 0, 0), 
+				'brand-image' => false, 
+				'image-size' => array(1), 
+				'image-offset' => array(0), 
 /* 				'image' => false,  */
 				'type' => false,  // fixed, static, container
 				'position' => 'top', // top, bottom
@@ -1565,7 +1566,7 @@ class BootstrapHelper extends AppHelper {
 		
 		$html = $this->Html->tag(
 			'nav', 
-			( $params['image'] ? $this->row(
+			( $params['image'] && !$params['brand-image'] ? $this->row(
 				$this->col(
 					$this->image(
 						$params['image']
@@ -1579,13 +1580,19 @@ class BootstrapHelper extends AppHelper {
 			$this->Html->div(
 				'navbar-header', 
 				$this->navbarToggle('navbar-collapse') . 
-				($params['brand']?$this->Html->link(
-					$params['brand'], 
+				( $params['brand'] || ($params['brand-image'] && $params['image']) ? $this->Html->link(
+					( ($params['brand-image'] && $params['image']) ? $this->image(
+						$params['image']
+					) : $params['brand']), 
 					$params['url'], 
 					array(
-						'class' => 'navbar-brand'
+						'class' => 'navbar-brand', 
+						'escape' => false, 
+						'style' => $this->Html->style(array(
+							'height' => 'auto'
+						))
 					)
-				):'')
+				) : '' )
 			) . 
 			$this->Html->div(
 				'collapse navbar-collapse', 
