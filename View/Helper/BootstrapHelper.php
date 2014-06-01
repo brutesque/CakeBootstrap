@@ -102,11 +102,15 @@ class BootstrapHelper extends AppHelper {
 				)))
 			)
 		);
-		$html = $this->Html->div(
-			$options['class'], 
-			$content, 
-			$options
-		);
+		
+		$html = '';
+		if (!empty($content)) {
+			$html .= $this->Html->div(
+				$options['class'], 
+				$content, 
+				$options
+			);
+		}
 		
 		return $html;
 	}
