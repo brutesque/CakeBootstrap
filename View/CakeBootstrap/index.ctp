@@ -2035,7 +2035,7 @@ echo $this->Bootstrap->row(
 							'type' => 'text', 
 							'placeholder' => 'you'
 						), 
-						'.brutefolio.com'
+						'.example.com'
 					), 
 					'help' => 'This is some help text'
 				), 
