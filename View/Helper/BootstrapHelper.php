@@ -83,9 +83,27 @@ class BootstrapHelper extends AppHelper {
 	//	Easily center a page's contents by wrapping its contents in a .container. 
 	//	Containers set max-width at various media query breakpoints to match our grid system.	
 	public function container ( $content = null, $params = array(), $options = array() ) {
-		
+		$params = array_merge(
+			array(
+				'class' => null
+			), 
+			$params
+		);
+		$options = array_merge(
+			array(
+				'class' => null
+			), 
+			$options, 
+			array(
+				'class' => implode(' ', array_filter(array(
+					'container', 
+					$params['class'], 
+					( isset($options['class']) ? $options['class'] : null)
+				)))
+			)
+		);
 		$html = $this->Html->div(
-			'container', 
+			$options['class'], 
 			$content, 
 			$options
 		);
@@ -2183,7 +2201,7 @@ class BootstrapHelper extends AppHelper {
 							$value
 						);
 					} else {
-						$html .= $value;
+						$html = $value;
 					}
 				}
 			}
