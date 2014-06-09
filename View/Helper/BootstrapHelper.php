@@ -42,6 +42,7 @@ class BootstrapHelper extends AppHelper {
 		$this->Html->css(
 			array_filter(
 				array(
+					'CakeBootstrap./jquery-ui-1.10.4/css/ui-lightness/jquery-ui-1.10.4.min', 
 					'CakeBootstrap./bootstrap/dist/css/bootstrap.min', 
 					( isset($this->settings['theme']) ? $this->settings['theme'] : '' ), 
 					'CakeBootstrap./select2/select2', 
@@ -59,8 +60,10 @@ class BootstrapHelper extends AppHelper {
 		);
 		$this->Html->script(
 			array(
+				'CakeBootstrap.modernizr.custom.16031', 
 				'CakeBootstrap./jquery/jquery-2.1.1.min', 
 				'CakeBootstrap./jquery-ui-1.10.4/js/jquery-ui-1.10.4.min', 
+				'CakeBootstrap.jquery.alterclass', 
 		
 				'CakeBootstrap./bootstrap/dist/js/bootstrap.min', 
 				'CakeBootstrap./autosize/jquery.autosize.min', 
