@@ -23,7 +23,7 @@ $body = ( Configure::check('navbar.menus') ? $this->Bootstrap->navbar(
 		Configure::read('navbar.menus'), 
 		( Configure::check('navbar.params') ? Configure::read('navbar.params') : array() )
 	) : '' ) . 
-	$this->Bootstrap->container(
+/* 	$this->Bootstrap->container( */
 		$this->Session->flash() . 
 /*
 		$this->Session->flash('auth', array(
@@ -33,11 +33,13 @@ $body = ( Configure::check('navbar.menus') ? $this->Bootstrap->navbar(
 		    ),
 		)) . 
 */
-		$this->fetch('content'), 
-		null, 
+		$this->fetch('content'/* ),  */
+/*
+		array(), 
 		array(
-/* 			'id' => 'content' */
+			'id' => 'content'
 		)
+*/
 	) . 
 	$this->fetch('elementCss') . 
 	$this->fetch('script') . 
