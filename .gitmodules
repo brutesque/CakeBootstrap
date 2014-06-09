@@ -19,3 +19,6 @@
 [submodule "webroot/jquery-ui-touch-punch"]
 	path = webroot/jquery-ui-touch-punch
 	url = https://github.com/furf/jquery-ui-touch-punch.git
+[submodule "webroot/imagefill"]
+	path = webroot/imagefill
+	url = https://github.com/johnpolacek/imagefill.js.git
