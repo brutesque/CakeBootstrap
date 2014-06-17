@@ -2410,19 +2410,20 @@ class BootstrapHelper extends AppHelper {
 			array(
 				'ratio' => 1, 
 				'tag' => 'div', 
-				'wrapClass' => 'aspect-wrapper'
+				'wrapClass' => 'aspect-wrapper', 
+				'class' => null
 			), 
 			(array)$params
 		);
 		$options = array_merge(
 			array(
 				'class' => implode(' ', array_filter(array(
-					'aspect-wrapper', 
-					(isset($options['class']) ? $options['class'] : null)
+					$params['wrapClass'], 
+					(isset($params['class']) ? $params['class'] : null)
 				))), 
-				'style' => $this->Html->style(array(
+				'style' => $this->Html->style(array_filter(array(
 					'padding-top' => ( $params['ratio'] ? ( ( 1 / $params['ratio'] ) * 100 ) . '%' : '100%' )
-				))
+				)))
 			), 
 			(array)$options
 		);
