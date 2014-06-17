@@ -2,7 +2,11 @@
 App::import('Helper', 'Html') ;
 
 class BootstrapHelper extends AppHelper {
-	public $helpers = array('Html', 'Form');
+	public $helpers = array(
+		'Html', 
+		'Form', 
+		'CakeBootstrap.Minify'
+	);
 	
 
 	private $sizeSteps = array('xs', 'sm', 'md', 'lg');
@@ -44,15 +48,23 @@ class BootstrapHelper extends AppHelper {
 				array(
 					'CakeBootstrap./jquery-ui-1.10.4/css/ui-lightness/jquery-ui-1.10.4.min', 
 					'CakeBootstrap./bootstrap/dist/css/bootstrap.min', 
-					( isset($this->settings['theme']) ? $this->settings['theme'] : '' ), 
+					( isset($this->settings['theme']) ? $this->settings['theme'] : '' )
+				)
+			), 
+			array(
+				'inline' => false, 
+				'media' => 'screen'
+			)
+		);
+		$this->Minify->css(
+			array_filter(
+				array(
+					'CakeBootstrap./bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min', 
 					'CakeBootstrap./select2/select2', 
 					'CakeBootstrap./bootstrap-datepicker/css/datepicker', 
-					'CakeBootstrap./bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min', 
-
 					'CakeBootstrap.cake-bootstrap'
 				)
 			), 
-			null, 
 			array(
 				'inline' => false, 
 				'media' => 'screen'
@@ -60,18 +72,26 @@ class BootstrapHelper extends AppHelper {
 		);
 		$this->Html->script(
 			array(
-				'CakeBootstrap.modernizr.custom.16031', 
 				'CakeBootstrap./jquery/jquery-2.1.1.min', 
+			), 
+			array(
+				'inline' => false, 
+				'block' => 'script', 
+				'once' => true
+			)
+		);
+		$this->Minify->script(
+			array(
+				'CakeBootstrap.modernizr.custom.16031', 
 				'CakeBootstrap./jquery-ui-1.10.4/js/jquery-ui-1.10.4.min', 
-				'CakeBootstrap.jquery.alterclass', 
-		
 				'CakeBootstrap./bootstrap/dist/js/bootstrap.min', 
 				'CakeBootstrap./autosize/jquery.autosize.min', 
 				'CakeBootstrap./jquery-ui-touch-punch/jquery.ui.touch-punch.min', 
-				'CakeBootstrap./select2/select2', 
-				'CakeBootstrap./bootstrap-datepicker/js/bootstrap-datepicker', 
 				'CakeBootstrap./bootstrap-switch/dist/js/bootstrap-switch.min', 
 
+				'CakeBootstrap.jquery.alterclass', 
+				'CakeBootstrap./select2/select2', 
+				'CakeBootstrap./bootstrap-datepicker/js/bootstrap-datepicker', 
 				'CakeBootstrap.cake-bootstrap'
 			), 
 			array(
@@ -88,7 +108,9 @@ class BootstrapHelper extends AppHelper {
 	public function container ( $content = null, $params = array(), $options = array() ) {
 		$params = array_merge(
 			array(
-				'class' => null
+				'class' => null, 
+				'style' => null, 
+				'id' => null
 			), 
 			$params
 		);
@@ -102,7 +124,9 @@ class BootstrapHelper extends AppHelper {
 					'container', 
 					$params['class'], 
 					( isset($options['class']) ? $options['class'] : null)
-				)))
+				))), 
+				'style' => $params['style'], 
+				'id' => $params['id']
 			)
 		);
 		
@@ -1745,25 +1769,29 @@ class BootstrapHelper extends AppHelper {
 		return $html;
 	}
 	
-	public function jumbotron ($content = array(), $params = array(), $options = array()) {
+	public function jumbotron ($content = null, $params = array(), $options = array()) {
 
+/*
 		$content = (array)$content;
 		if ( isset($content[0]) ) {
 			$content['header'] = $content[0];
 			unset($content[0]);
 		}
+*/
 		$content = array_merge(
 			array(
-				'background-image' => false
+				'background-image' => false, 
+				'background-attachment' => null
 			), 
-			$content
+			(array)$content
 		);
 		$params = array_merge(
 			array(
 				'size' => false, 
 				'offset' => false, 
 				'width' => 100, 
-				'height' => 50
+				'height' => 50, 
+				'container' => false
 			), 
 			$params
 		);
@@ -1773,9 +1801,10 @@ class BootstrapHelper extends AppHelper {
 					'background-size' => 'cover', 
 					'background-position' => '50% 50%', 
 					'background-image' => ( 'url(' . $content['background-image'] . ')' ), 
+					'background-attachment' => $content['background-attachment'], 
 /* 					'min-height' => (1140 / 2) . 'px',  */
 /* 					'width' => '100%',  */
-					'height' => '50%'
+/* 					'height' => '50%' */
 				))
 			) : array() ), 
 			array(), 
@@ -1785,6 +1814,9 @@ class BootstrapHelper extends AppHelper {
 		$contentHtml = null;
 		foreach( $content as $contentKey => $contentChunk) {
 			switch ($contentKey) {
+				case ('0'):
+					$contentHtml .= $content[$contentKey];
+					break;
 				case ('header') :
 					if ( !is_array($content[$contentKey]) ) {
 						$content[$contentKey] = (array)($content[$contentKey]);
@@ -1800,11 +1832,13 @@ class BootstrapHelper extends AppHelper {
 				case ('buttons') :
 					$contentHtml .= $this->typo( $this->buttons( $content[$contentKey] ) );
 					break;
-				default:
+				default :
 				case ('text') :
 					$contentHtml .= $this->typo( $content[$contentKey] );
 					break;
 				case('background-image') :
+					break;
+				case('background-attachment') :
 					break;
 				case('image') :
 					$contentHtml .= $this->image( $content[$contentKey] );
@@ -1823,7 +1857,7 @@ class BootstrapHelper extends AppHelper {
 		}
 		$html = $this->Html->div(
 			'jumbotron',
-			$contentHtml, 
+			( $params['container'] ? $this->container($contentHtml) : $contentHtml ), 
 			$options
 		);
 
@@ -2371,6 +2405,41 @@ class BootstrapHelper extends AppHelper {
 
 	// Convenience wrappers
 	
+	public function aspect( $content, $params = null, $options = array()) {
+		$params = array_merge(
+			array(
+				'ratio' => 1, 
+				'tag' => 'div', 
+				'wrapClass' => 'aspect-wrapper'
+			), 
+			(array)$params
+		);
+		$options = array_merge(
+			array(
+				'class' => implode(' ', array_filter(array(
+					'aspect-wrapper', 
+					(isset($options['class']) ? $options['class'] : null)
+				))), 
+				'style' => $this->Html->style(array(
+					'padding-top' => ( $params['ratio'] ? ( ( 1 / $params['ratio'] ) * 100 ) . '%' : '100%' )
+				))
+			), 
+			(array)$options
+		);
+		
+		if ($params['ratio'] <= 0) {
+			$html = $content;
+		} else {
+			$html = $this->Html->tag(
+				$params['tag'], 
+				$content, 
+				$options
+			);
+		}
+		
+		return $html;
+	}
+
 	public function br () {
 		return $this->Html->tag('br');
 	}
