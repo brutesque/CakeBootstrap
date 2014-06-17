@@ -2197,7 +2197,7 @@ class BootstrapHelper extends AppHelper {
 		
 		if (is_array($content)) {
 			foreach ( $content as $key => $value ) {
-				if ($value !== null) {
+				if (!empty($value)) {
 					if ($key === 'title') {
 						$html .= $this->Html->div(
 							'panel-heading', 
