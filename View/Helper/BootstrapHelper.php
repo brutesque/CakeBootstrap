@@ -2242,7 +2242,7 @@ class BootstrapHelper extends AppHelper {
 							$value
 						);
 					} else {
-						$html = $value;
+						$html .= $value;
 					}
 				}
 			}
