@@ -22,6 +22,5 @@ function uiTools() {
 	    todayHighlight: true, 
 	    startView: 1
 	});
-
 }
 

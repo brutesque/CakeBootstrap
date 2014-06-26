@@ -52,7 +52,7 @@ class MinifyHelper extends AppHelper {
 			$minifyPath[] = $this->Html->url(
 				Router::url(array_merge(
 					array(
-						'plugin' => 'brute_strap', 
+						'plugin' => 'cake_bootstrap', 
 						'controller' => 'minify', 
 						'action' => 'css'
 					), 
@@ -73,7 +73,7 @@ class MinifyHelper extends AppHelper {
 			$minifyPath[] = $this->Html->url(
 				Router::url(array_merge(
 					array(
-						'plugin' => 'brute_strap', 
+						'plugin' => 'cake_bootstrap', 
 						'controller' => 'minify', 
 						'action' => 'js'
 					), 

@@ -17,7 +17,9 @@ class BootstrapHelper extends AppHelper {
 	public function __construct (View $view, $settings = array()) {
         $settings = Hash::merge(
         	array(
-/*         		'theme' => false */
+        		'margin' => 5, 
+        		'border' => 1, 
+        		'theme' => false
 /*         		'theme' => 'CakeBootstrap./bootstrap/css/bootstrap-theme.min' */
 /*         		'theme' => 'CakeBootstrap./bootswatch/amelia/bootstrap.min' */
 /*         		'theme' => 'CakeBootstrap./bootswatch/cerulean/bootstrap.min' */
@@ -33,7 +35,6 @@ class BootstrapHelper extends AppHelper {
 /*         		'theme' => 'CakeBootstrap./bootswatch/superhero/bootstrap.min' */
 /*         		'theme' => 'CakeBootstrap./bootswatch/united/bootstrap.min' */
 /*         		'theme' => 'CakeBootstrap./bootswatch/yeti/bootstrap.min' */
-
         	), 
         	$settings
         );
@@ -102,6 +103,55 @@ class BootstrapHelper extends AppHelper {
 		);
 	}
 
+	public function customize ( $params = null ) {
+		$params = array_merge(
+			array(
+				'margin' => $this->settings['margin'], 
+				'border' => $this->settings['border']
+			), 
+			(array)$params
+		);
+		
+		$html = $this->style(array(
+			implode(', ', array(
+
+				"div[class*='col-'] > .panel", 
+				".navbar"
+	
+			)) => array(
+
+				'border-width' => ( $params['border'] . 'px' )
+
+			), 
+			implode(', ', array(
+
+				"div.panel", 
+				"div[class*='col-'] > .breadcrumb", 
+				"div[class*='col-'] > .page-header", 
+				"div[class*='col-'] > .breadcrumb", 
+				"div[class*='col-'] > .alert", 
+				"div[class*='col-'] > .jumbotron"
+
+			)) => array(
+
+				'margin' => ( $params['margin'] . 'px' )
+
+			), 
+			implode(', ', array(
+
+				".navbar"
+
+			)) => array(
+
+				'margin-left' => ( $params['margin'] . 'px' ), 
+				'margin-right' => ( $params['margin'] . 'px' )
+
+			)
+		));
+		
+		return $html;
+	}
+
 	//	Containers
 	//	Easily center a page's contents by wrapping its contents in a .container. 
 	//	Containers set max-width at various media query breakpoints to match our grid system.	
@@ -110,7 +160,8 @@ class BootstrapHelper extends AppHelper {
 			array(
 				'class' => null, 
 				'style' => null, 
-				'id' => null
+				'id' => null, 
+				'fluid' => false
 			), 
 			$params
 		);
@@ -121,7 +172,7 @@ class BootstrapHelper extends AppHelper {
 			$options, 
 			array(
 				'class' => implode(' ', array_filter(array(
-					'container', 
+					( 'container' . ( $params['fluid'] ? '-fluid' : '') ), 
 					$params['class'], 
 					( isset($options['class']) ? $options['class'] : null)
 				))), 
@@ -249,7 +300,8 @@ class BootstrapHelper extends AppHelper {
 				'color' => false, // muted, primary, success, info, warning, danger
 				'wrap' => false, 
 				'pre-scrollable' => false, 
-				'pre-height' => false
+				'pre-height' => false, 
+				'class' => false
 			), 
 			$params
 		);
@@ -306,6 +358,7 @@ class BootstrapHelper extends AppHelper {
 				break;
 		}
 		$options['class'] = implode(' ', array_filter(array(
+			( $params['class'] ? $params['class'] : null ), 
 			( $params['align'] ? ('text-' . $params['align']) : null ), 
 			( $params['color'] ? ('text-' . $params['color']) : null ), 
 			( isset($options['class']) ? $options['class'] : null )
@@ -510,12 +563,14 @@ class BootstrapHelper extends AppHelper {
 		);
 		$params = array_merge(
 			array(
+				'height' => false
 			), 
 			$params
 		);
 		
 		$options = array_merge(
 			array(
+				'class' => false
 			), 
 			$options
 		);
@@ -554,8 +609,8 @@ class BootstrapHelper extends AppHelper {
 		$html = $this->Html->div(
 			implode (' ', array_filter(array(
 				'input-group', 
-				( isset($params['height']) ? ( 'input-group' . '-' . $params['height'] ) : null ), 
-				( isset($options['class']) ? $options['class'] : null )
+				( $params['height'] ? ( 'input-group' . '-' . $params['height'] ) : null ), 
+				( $options['class'] ? $options['class'] : null )
 			))), 
 			$html
 		);
@@ -585,15 +640,10 @@ class BootstrapHelper extends AppHelper {
 		$optionsData = array();
 		if ($input['data'] && is_array($input['data'])) {
 			foreach ($input['data'] as $key => $optionData) {
-/*
-				pr($key);
-				pr($optionData);
-*/
 				$optionsData['data-' . $key] = $optionData;
 			}
 		}
-/* 		pr($optionsData); */
-		
+
 		$options = array_merge(
 			array(
 				'placeholder' => $input['placeholder'], 
@@ -610,7 +660,8 @@ class BootstrapHelper extends AppHelper {
 				'empty' => $input['empty'], 
 				'multiple' => $input['multiple'], 
 				'rows' => $input['rows'], 
-				'value' => $input['value']
+				'value' => $input['value'], 
+				'checked' => ( ( $input['type'] == 'checkbox' ) && $input['value'] ? 'checked' : null )
 			), 
 			$optionsData, 
 			$options
@@ -938,6 +989,7 @@ class BootstrapHelper extends AppHelper {
 		$button = array_merge(
 			array(
 				'label' => '', 
+				'value' => false, 
 				'size' => false, // xs, sm, md or lg
 				'color' => 'default', // default, primary, success, info, warning, danger, link
 				'tag' => 'button',  // 'button', 'a', 'input' or 'submit'
@@ -956,11 +1008,12 @@ class BootstrapHelper extends AppHelper {
 				'type' => 'button', 
 				'navbar-btn' => false, 
 				'target' => false, 
-				'class' => null
+				'class' => null, 
+				'name' => false
 			), 
 			$button
 		);
-		
+
 		if ($button['dropdown'] && !$button['split']) {
 			$button['tag'] = 'button';
 		}
@@ -983,7 +1036,7 @@ class BootstrapHelper extends AppHelper {
 			( ($button['dropdown'] && !$button['split']) ? $this->caret() : null )
 		)));
 		$buttonOptions = array_merge(
-			(($button['tag'] == 'a')?array( 'escape' => false ):array()), 
+			( ($button['tag'] == 'a') ? array( 'escape' => false ) : array() ), 
 			array(
 				'id' => ( $button['id'] ? $button['id'] : false ), 
 				'type' => $button['type'], 
@@ -1002,7 +1055,9 @@ class BootstrapHelper extends AppHelper {
 				'disabled' => ( $button['disabled'] ? 'disabled' : false ), 
 				( $button['active'] && ($button['tag'] !== 'button') ? 'active' : null ), 
 				'data-toggle' => ( ($button['dropdown'] && !$button['split']) ? ( 'dropdown' ) : false ), 
-				'target' => ( $button['target'] ? $button['target'] : null )
+				'target' => ( $button['target'] ? $button['target'] : null ), 
+				'value' => ( $button['value'] ? $button['value'] : null ), 
+				'name' => ( $button['name'] ? $button['name'] : null )
 			), 
 			$buttonData
 		);
@@ -1032,7 +1087,8 @@ class BootstrapHelper extends AppHelper {
 				}
 				break;
 			case ( 'input') :
-				$html = $this->Form->button(
+				$buttonOptions['type'] = 'input';
+				$html = $this->Form->input(
 					$buttonLabel, 
 					$buttonOptions
 				);
@@ -1459,7 +1515,7 @@ class BootstrapHelper extends AppHelper {
 	public function nav ( $content, $params = array(), $options = array() ) {
 		$params = array_merge(
 			array(
-				'type' => 'tabs',  // tabs, pills, breadcrumbs, navbar
+				'type' => 'pills',  // tabs, pills, breadcrumbs, navbar
 				'stacked' => false, 
 				'justified' => false, 
 				'tag' => 'ul', 
@@ -1478,38 +1534,40 @@ class BootstrapHelper extends AppHelper {
 		$html = '';
 		
 		foreach ($content as $value) {
-			$value = array_merge(
-				array(
-					'url' => '#', 
-					'active' => false, 
-					'disabled' => false, 
-					'dropdown' => false
-				), 
-				$value
-			);
-			
-			$html .= $this->Html->tag(
-				'li', 
-				$this->Html->link(
-					( isset($value['icon']) ? ($this->icon($value['icon']) . ' ') : '' ) . 
-					( isset($value['label']) ? $value['label'] : '' ) . 
-					( $value['dropdown'] ? ( '&nbsp;' . $this->caret() ) : null), 
-					$value['url'], 
+			if (!empty($value)) {
+				$value = array_merge(
 					array(
-						'escape' => false, 
-						'class' => ( $value['dropdown'] ? 'dropdown-toggle' : false), 
-						'data-toggle' => ( $value['dropdown'] ? 'dropdown' : false )
+						'url' => '#', 
+						'active' => false, 
+						'disabled' => false, 
+						'dropdown' => false
+					), 
+					$value
+				);
+				
+				$html .= $this->Html->tag(
+					'li', 
+					$this->Html->link(
+						( isset($value['icon']) ? ($this->icon($value['icon']) . ' ') : '' ) . 
+						( isset($value['label']) ? $value['label'] : '' ) . 
+						( $value['dropdown'] ? ( '&nbsp;' . $this->caret() ) : null), 
+						$value['url'], 
+						array(
+							'escape' => false, 
+							'class' => ( $value['dropdown'] ? 'dropdown-toggle' : false), 
+							'data-toggle' => ( $value['dropdown'] ? 'dropdown' : false )
+						)
+					) . 
+					( $value['dropdown'] ? $this->dropdown($value['dropdown']) : null ), 
+					array(
+						'class' => implode(' ', array_filter(array(
+							( $value['active'] ? 'active' : null ), 
+							( $value['disabled'] ? 'disabled' : null ), 
+							( $value['dropdown'] ? 'dropdown' : null)
+						)))
 					)
-				) . 
-				( $value['dropdown'] ? $this->dropdown($value['dropdown']) : null ), 
-				array(
-					'class' => implode(' ', array_filter(array(
-						( $value['active'] ? 'active' : null ), 
-						( $value['disabled'] ? 'disabled' : null ), 
-						( $value['dropdown'] ? 'dropdown' : null)
-					)))
-				)
-			);
+				);
+			}
 		}
 		
 		$html = $this->Html->tag(
@@ -1546,11 +1604,13 @@ class BootstrapHelper extends AppHelper {
 			$params
 		);
 
+/*
 		if ( ($params['type'] === 'fixed') && ($params['position'] === 'top') ) {
 			$this->bodyParams['padding-top'] = '70px';
 		} elseif ( ($params['type'] === 'fixed') && ($params['position'] === 'bottom') ) {
 			$this->bodyParams['padding-bottom'] = '70px';
 		}
+*/
 
 
 		$contentHtml = '';
@@ -2403,6 +2463,124 @@ class BootstrapHelper extends AppHelper {
 		return $result;
 	}
 
+	public function cover ( $content = null, $params = null, $options = null ) {
+		$params = array_merge(
+			array(
+				'height' => false, // integer as percentage to override the 100% default
+				'position' => 'center', // left, center, right
+				'size' => array(10, 8, 6, 4), 
+				'offset' => null, // array(1, 2, 3, 4) - overrules position attribute
+				'class' => null, 
+				'image' => false, 
+				'fixed' => true, 
+				'shadow' => ( isset($params['image']) && $params['image'] ? true : false ), 
+				'color' => ( isset($params['image']) && $params['image'] ? '#fff' : false ), 
+				'shadowSize' => 100, // in pixels
+				'textShadowSize' => 3, // in pixels
+				'textShadowOffset' => array(0, 1), 
+				'shadowColor' => 'rgba(0,0,0,0.5)', 
+				'textShadowColor' => ( isset($params['shadowColor']) ? $params['black'] : 'rgba(0,0,0,0.5)' )
+			), 
+			(array)$params
+		);
+		$options = array_merge(
+			array(
+				'class' => implode(' ', array_filter(array(
+					'site-wrapper', 
+					$params['class']
+				))), 
+				'style' => $this->Html->style(array_filter(array(
+					'color' => ( $params['color'] ? $params['color'] : null ), 
+					'min-height' => ( $params['height'] ? ($params['height'] . '%') : null ), 
+					'text-shadow' => ( $params['shadow'] ? ($params['textShadowOffset'][0] . 'px ' . $params['textShadowOffset'][1] . 'px ' . $params['textShadowSize'] . 'px ' . $params['textShadowColor']) : null ), 
+					'box-shadow' => ( $params['shadow'] ? ( 'inset 0px 0px ' . $params['shadowSize'] . 'px ' . $params['shadowColor'] ) : null ), 
+					'background-image' => ( $params['image'] ? ('url(' . $this->assetUrl(
+						$params['image'], 
+						array(
+							'pathPrefix' => 'img/'
+						)
+					) . ')') : null ), 
+					'background-size' => 'cover', 
+					'background-position' => '50% 50%', 
+					'background-attachment' => ( $params['fixed'] ? 'fixed' : 'scroll' )
+				)))
+			), 
+			(array)$options
+		);
+		
+		if (empty($params['offset'])) {
+			switch ($params['position']) {
+				default:
+				case ('center') :
+					foreach ( (array)$params['size'] as $i => $size ) {
+						$params['offset'][$i] = floor( ( 12 - $size ) / 2 );
+					}
+					break;
+				case ('left') :
+						$params['offset'] = 0;
+					break;
+				case ('right') :
+					foreach ( (array)$params['size'] as $i => $size ) {
+						$params['offset'][$i] = ( 12 - $size );
+					}
+					break;
+			}
+		}
+
+		if ( is_array($content) ) {
+			$content = array_merge(
+				array(
+					'heading' => false
+				), 
+				$content
+			);
+			
+			$contentHtml = '';
+			foreach ($content as $key => $value) {
+				$type = ( $key === 'heading' ? 'h1' : 'lead' );
+				$contentHtml .= $this->typo(
+					$value, 
+					array(
+						'type' => $type
+					)
+				);
+			}
+			$contentHtml = $this->row(
+				$this->col(
+					$this->panel(
+						$contentHtml, 
+						array(
+							'color' => 'transperant'
+						)
+					), 
+					array(
+						'size' => $params['size'], 
+						'offset' => $params['offset']
+					)
+				)
+			);
+			
+		} else {
+			$contentHtml = $content;
+		}
+		
+		$html = '';
+		if (!empty($contentHtml)) {
+			$html = $this->Html->tag(
+				'div', 
+				$this->Html->div(
+					'site-wrapper-inner', 
+					$this->container(
+						$contentHtml
+					)
+				), 
+				$options
+			);
+		}
+		
+		return $html;
+	}
+
 	// Convenience wrappers
 	
 	public function aspect( $content, $params = null, $options = array()) {
@@ -2462,6 +2640,46 @@ class BootstrapHelper extends AppHelper {
 			'head', 
 			$content
 		);	
+	}
+
+	public function style ( $content = null, $params = null ) {
+		$params = array_merge(
+			array(
+				'tag' => 'style', 
+				'block' => false
+			), 
+			(array)$params
+		);
+
+		$result = '';
+		$style = '';
+		if (!empty($content)) {
+			foreach ($content as $selector => $properties) {
+				$style .= "\n" . $selector . " {\n" . $this->Html->style(
+					(array)$properties, 
+					false
+				) . "\n}\n";
+			}
+			if ($params['tag']) {
+				$result .= $this->Html->tag(
+					$params['tag'], 
+					$style
+				);
+			} else {
+				$result = $style;
+			}
+
+		}
+
+		if ($params['block']) {
+			$this->_View->start(
+				( is_string($params['block']) ? $params['block'] : 'style' )
+			);
+			echo $result;
+			$this->_View->end();
+		} else {
+			return $result;
+		}
 	}
 
 	public function body ($content, $params = array()) {
