@@ -2241,13 +2241,16 @@ class BootstrapHelper extends AppHelper {
 	
 		$params = array_merge(
 			array(
-				'color' => 'default'
+				'color' => 'default', 
+				'class' => null, 
+				'id' => null
 			), 
 			(array)$params
 		);
 		$options = array_merge(
 			array(
-				'class' => null
+				'class' => $params['class'], 
+				'id' => $params['id']
 			), 
 			(array)$options
 		);
@@ -2471,6 +2474,8 @@ class BootstrapHelper extends AppHelper {
 				'size' => array(10, 8, 6, 4), 
 				'offset' => null, // array(1, 2, 3, 4) - overrules position attribute
 				'class' => null, 
+				'panelClass' => null, 
+				'panelId' => null, 
 				'image' => false, 
 				'fixed' => true, 
 				'shadow' => ( isset($params['image']) && $params['image'] ? true : false ), 
@@ -2550,7 +2555,9 @@ class BootstrapHelper extends AppHelper {
 					$this->panel(
 						$contentHtml, 
 						array(
-							'color' => 'transperant'
+							'color' => 'transperant', 
+							'class' => $params['panelClass'], 
+							'id' => $params['panelId']
 						)
 					), 
 					array(
