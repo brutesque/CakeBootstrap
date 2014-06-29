@@ -27,9 +27,12 @@ html, body {
 
 /* panel-transperant */
 
-.panel-transperant {
-    background-color: transparent !important;
-    border: 0;
+.panel-transperant, 
+.panel-transperant > [class*='panel-'] {
+	background-color: transparent !important;
+	border: none;
+	border-color: transparent;
+	box-shadow: 0px 0px 0px black;
 }
 
 /* panel-overlay */
