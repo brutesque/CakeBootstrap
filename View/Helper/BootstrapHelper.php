@@ -1512,6 +1512,80 @@ class BootstrapHelper extends AppHelper {
 		return $html;
 	}
 
+	public function tabs ( $content = null, $params = null, $options = null ) {
+		$params = array_merge(
+			array(
+				'class' => null
+			), 
+			(array)$params
+		);
+		$options = array_merge(
+			array(
+				'class' => implode(' ', array_filter(array(
+					'tab-content', 
+					$params['class']
+				)))
+			), 
+			(array)$options
+		);
+		
+		$anyActive = array_filter(Hash::extract( (array)$content, '{n}.active' ));
+		if (empty($anyActive)) {
+			$defaultActive = true;
+		} else {
+			$defaultActive = false;
+		}
+
+		$navs = array();
+		$panes = '';
+		foreach ( (array)$content as $tab ) {
+			$uniqid = uniqid();
+			$tab = array_merge(
+				array(
+					'label' => false, 
+					'url' => '#' . $uniqid, 
+					'active' => $defaultActive, 
+					'class' => null
+				), 
+				(array)$tab
+			);
+			$paneOptions = array(
+				'class' => implode(' ', array_filter(array(
+					'tab-pane', 
+					( $tab['active'] ? 'active' : null ), 
+					$tab['class']
+				))), 
+				'id' => $uniqid
+			);
+			$panes .= $this->Html->tag(
+				'div', 
+				$tab[0], 
+				$paneOptions
+			);
+			unset($tab[0]);
+			$navs[] = $tab;
+			
+			$defaultActive = false;
+		}
+		
+		$html = '';
+		if (!empty($panes)) {
+			$html = $this->nav(
+				$navs, 
+				array(
+					'type' => 'tabs'
+				)
+			) . 
+			$this->Html->tag(
+				'div', 
+				$panes, 
+				$options
+			);
+		}
+		
+		return $html;
+	}
+
 	public function nav ( $content, $params = array(), $options = array() ) {
 		$params = array_merge(
 			array(
@@ -1540,7 +1614,8 @@ class BootstrapHelper extends AppHelper {
 						'url' => '#', 
 						'active' => false, 
 						'disabled' => false, 
-						'dropdown' => false
+						'dropdown' => false, 
+						'role' => ( $params['type']=='tabs' ? 'tab' : null)
 					), 
 					$value
 				);
@@ -1554,8 +1629,9 @@ class BootstrapHelper extends AppHelper {
 						$value['url'], 
 						array(
 							'escape' => false, 
-							'class' => ( $value['dropdown'] ? 'dropdown-toggle' : false), 
-							'data-toggle' => ( $value['dropdown'] ? 'dropdown' : false )
+							'class' => ( $value['dropdown'] ? 'dropdown-toggle' : null), 
+							'data-toggle' => ( $value['dropdown'] ? 'dropdown' : ( $params['type']=='tabs' ? 'tab' : null ) ), 
+							'role' => ( $value['role'] ? $value['role'] : null )
 						)
 					) . 
 					( $value['dropdown'] ? $this->dropdown($value['dropdown']) : null ), 
