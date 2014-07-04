@@ -1557,12 +1557,14 @@ class BootstrapHelper extends AppHelper {
 				))), 
 				'id' => $uniqid
 			);
-			$panes .= $this->Html->tag(
-				'div', 
-				$tab[0], 
-				$paneOptions
-			);
-			unset($tab[0]);
+			if (isset($tab[0])) {
+				$panes .= $this->Html->tag(
+					'div', 
+					$tab[0], 
+					$paneOptions
+				);
+				unset($tab[0]);
+			}
 			$navs[] = $tab;
 			
 			$defaultActive = false;
@@ -1615,7 +1617,8 @@ class BootstrapHelper extends AppHelper {
 						'active' => false, 
 						'disabled' => false, 
 						'dropdown' => false, 
-						'role' => ( $params['type']=='tabs' ? 'tab' : null)
+						'role' => ( $params['type']=='tabs' ? 'tab' : null), 
+						'data-toggle' => ( isset($value['dropdown']) && $value['dropdown'] ? 'dropdown' : ( $params['type']=='tabs' ? 'tab' : null ) )
 					), 
 					$value
 				);
@@ -1630,7 +1633,7 @@ class BootstrapHelper extends AppHelper {
 						array(
 							'escape' => false, 
 							'class' => ( $value['dropdown'] ? 'dropdown-toggle' : null), 
-							'data-toggle' => ( $value['dropdown'] ? 'dropdown' : ( $params['type']=='tabs' ? 'tab' : null ) ), 
+							'data-toggle' => $value['data-toggle'], 
 							'role' => ( $value['role'] ? $value['role'] : null )
 						)
 					) . 
