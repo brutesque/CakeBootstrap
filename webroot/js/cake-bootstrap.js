@@ -12,7 +12,9 @@ $( document ).ajaxComplete(function(event, xhr, settings) {
 
 function uiTools() {
 
-	$('textarea.autosize').autosize();
+	$('textarea.autosize').autosize({
+		append: ""
+	});
 	$(".select2").select2({
 		escapeMarkup: function(m) {
 			return m;
