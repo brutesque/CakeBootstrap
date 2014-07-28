@@ -2316,19 +2316,90 @@ class BootstrapHelper extends AppHelper {
 		return $html;
 	}
 	
-	public function panel ( $content, $params = array(), $options = array() ) {
-	
+	public function panels ( $content = null, $params = null, $options = null ) {
 		$params = array_merge(
 			array(
-				'color' => 'default', 
+				'id' => 'panel-group-' . uniqid(), 
 				'class' => null, 
-				'id' => null
+				'collapse' => false, 
+				'accordion' => true
 			), 
 			(array)$params
 		);
 		$options = array_merge(
 			array(
-				'class' => $params['class'], 
+				'id' => $params['id'], 
+				'class' => implode(' ', array_filter(array(
+					'panel-group', 
+					$params['class']
+				)))
+			), 
+			(array)$options
+		);
+		
+		$html = '';
+		
+		$anyActive = array_filter(Hash::extract( (array)$content, '{n}.params.active' ));
+		if (empty($anyActive)) {
+			$defaultActive = true;
+		} else {
+			$defaultActive = false;
+		}
+		if ( !empty($content) ) {
+			$i = 0;
+			foreach ( (array)$content as $subContent ) {
+				$subParams = array_merge(
+					array(
+						'collapse' => $params['collapse'], 
+						'parent' => ( ($params['accordion'] && $params['collapse']) ? $params['id'] : null ), 
+						'collapseId' => 'collapse' . $i, 
+						'active' => ( $params['accordion'] && $i === 0 ? $defaultActive : false )
+					), 
+					( isset($subContent['params']) ? (array)$subContent['params'] : array() )
+				);
+				if ( isset($subContent['params']) ) {
+					unset($subContent['params']);
+				}
+				if ( is_array($subContent) && isset($subContent[0]) ) {
+					$subContent = $subContent[0];
+				}
+				$html .= $this->panel(
+					$subContent, 
+					$subParams
+				);
+				$i++;
+			}
+			$html = $this->Html->tag(
+				'div', 
+				$html, 
+				$options
+			);
+		}
+		
+		return $html;
+	}
+
+	public function panel ( $content, $params = null, $options = null ) {
+	
+		$params = array_merge(
+			array(
+				'color' => 'default', 
+				'class' => null, 
+				'id' => null, 
+				'collapse' => false, 
+				'collapseId' => ( (isset($params['collapse']) && $params['collapse']) ? ('collapse' . uniqid()) : null ), 
+				'parent' => false, 
+				'active' => true
+			), 
+			(array)$params
+		);
+		$options = array_merge(
+			array(
+				'class' => implode(' ', array_filter(array(
+					'panel', 
+					'panel-' . $params['color'], 
+					$params['class']
+				))), 
 				'id' => $params['id']
 			), 
 			(array)$options
@@ -2336,28 +2407,150 @@ class BootstrapHelper extends AppHelper {
 
 	
 		$html = '';
+		$heading = '';
+		$bodyHtml = '';
 		
 		if (is_array($content)) {
 			foreach ( $content as $key => $value ) {
 				if (!empty($value)) {
 					if ($key === 'title') {
-						$html .= $this->Html->div(
-							'panel-heading', 
-							$this->typo(
-								$value, 
+						$heading .= $this->typo(
+							( $params['collapse'] ? $this->Html->link(
+								$this->icon('chevron-down') . '&nbsp;' . $value, 
+								'#' . $params['collapseId'], 
 								array(
-									'type' => 'h3'
-								), 
-								array(
-									'class' => 'panel-title'
+									'data-parent' => '#' . $params['parent'], 
+									'data-toggle' => 'collapse', 
+									'escape' => false
 								)
+							) : $value ), 
+							array(
+								'type' => 'h3'
+							), 
+							array(
+								'class' => 'panel-title'
+							)
+						);
+					} elseif ($key === 'h1') {
+						$heading .= $this->typo(
+							( $params['collapse'] ? $this->Html->link(
+								$this->icon('chevron-down') . '&nbsp;' . $value, 
+								'#' . $params['collapseId'], 
+								array(
+									'data-parent' => '#' . $params['parent'], 
+									'data-toggle' => 'collapse', 
+									'escape' => false
+								)
+							) : $value ), 
+							array(
+								'type' => 'h1'
+							), 
+							array(
+								'class' => 'panel-title'
+							)
+						);
+					} elseif ($key === 'h2') {
+						$heading .= $this->typo(
+							( $params['collapse'] ? $this->Html->link(
+								$this->icon('chevron-down') . '&nbsp;' . $value, 
+								'#' . $params['collapseId'], 
+								array(
+									'data-parent' => '#' . $params['parent'], 
+									'data-toggle' => 'collapse', 
+									'escape' => false
+								)
+							) : $value ), 
+							array(
+								'type' => 'h2'
+							), 
+							array(
+								'class' => 'panel-title'
+							)
+						);
+					} elseif ($key === 'h3') {
+						$heading .= $this->typo(
+							( $params['collapse'] ? $this->Html->link(
+								$this->icon('chevron-down') . '&nbsp;' . $value, 
+								'#' . $params['collapseId'], 
+								array(
+									'data-parent' => '#' . $params['parent'], 
+									'data-toggle' => 'collapse', 
+									'escape' => false
+								)
+							) : $value ), 
+							array(
+								'type' => 'h3'
+							), 
+							array(
+								'class' => 'panel-title'
+							)
+						);
+					} elseif ($key === 'h4') {
+						$heading .= $this->typo(
+							( $params['collapse'] ? $this->Html->link(
+								$this->icon('chevron-down') . '&nbsp;' . $value, 
+								'#' . $params['collapseId'], 
+								array(
+									'data-parent' => '#' . $params['parent'], 
+									'data-toggle' => 'collapse', 
+									'escape' => false
+								)
+							) : $value ), 
+							array(
+								'type' => 'h4'
+							), 
+							array(
+								'class' => 'panel-title'
+							)
+						);
+					} elseif ($key === 'h5') {
+						$heading .= $this->typo(
+							( $params['collapse'] ? $this->Html->link(
+								$this->icon('chevron-down') . '&nbsp;' . $value, 
+								'#' . $params['collapseId'], 
+								array(
+									'data-parent' => '#' . $params['parent'], 
+									'data-toggle' => 'collapse', 
+									'escape' => false
+								)
+							) : $value ), 
+							array(
+								'type' => 'h5'
+							), 
+							array(
+								'class' => 'panel-title'
+							)
+						);
+					} elseif ($key === 'h6') {
+						$heading .= $this->typo(
+							( $params['collapse'] ? $this->Html->link(
+								$this->icon('chevron-down') . '&nbsp;' . $value, 
+								'#' . $params['collapseId'], 
+								array(
+									'data-parent' => '#' . $params['parent'], 
+									'data-toggle' => 'collapse', 
+									'escape' => false
+								)
+							) : $value ), 
+							array(
+								'type' => 'h6'
+							), 
+							array(
+								'class' => 'panel-title'
 							)
 						);
 					} elseif ($this->startsWith($key, 'heading')) {
-						$html .= $this->Html->div(
-							( 'panel-' . 'heading' ), 
-							$value
-						);
+						$heading .= ( $params['collapse'] ? $this->Html->link(
+							( $params['active'] ? $this->icon('chevron-down', array('class' => 'hide-collapsed')) : 
+							$this->icon('chevron-right', array('class' => 'show-collapsed')) ) . 
+							'&nbsp;' . $value, 
+							'#' . $params['collapseId'], 
+							array(
+								'data-parent' => '#' . $params['parent'], 
+								'data-toggle' => 'collapse', 
+									'escape' => false
+							)
+						) : $value );
 					} elseif ($this->startsWith($key, 'body')) {
 						$html .= $this->Html->div(
 							( 'panel-' . 'body' ), 
@@ -2394,13 +2587,49 @@ class BootstrapHelper extends AppHelper {
 				$content
 			);
 		}
-		
-		$html = $this->Html->div(
-			implode(' ', array_filter(array(
-				'panel', 
-				'panel-' . $params['color'], 
-				$options['class'] 
-			))), 
+
+		$headingHtml = '';
+		if ( !empty($heading) ) {
+			$headingHtml = $this->Html->div(
+				'panel-heading', 
+/*
+				$this->right(
+					$this->buttons(
+						array(
+							array(
+								'icon' => 'remove'
+							)
+						), 
+						array(
+							'size' => 'xs', 
+							'color' => $params['color']
+						)
+					)
+				) . 
+*/
+				$heading
+			);
+		}
+
+
+		if ($params['collapse']) {
+			$html = $this->Html->tag(
+				'div', 
+				$html, 
+				array(
+					'class' => implode(' ', array_filter(array(
+						'panel-collapse', 
+						'collapse', 
+						( $params['active'] ? 'in' : null )
+					))), 
+					'id' => $params['collapseId']
+				)
+			);
+		}
+
+		$html = $this->Html->tag(
+			'div', 
+			$headingHtml . 
 			$html, 
 			$options
 		);
