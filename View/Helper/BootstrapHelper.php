@@ -551,7 +551,6 @@ class BootstrapHelper extends AppHelper {
 				);
 			}
 		}
-		
 		return $html;
 	}
 	
@@ -2321,7 +2320,7 @@ class BootstrapHelper extends AppHelper {
 			array(
 				'id' => 'panel-group-' . uniqid(), 
 				'class' => null, 
-				'collapse' => false, 
+				'collapse' => true, 
 				'accordion' => true
 			), 
 			(array)$params
