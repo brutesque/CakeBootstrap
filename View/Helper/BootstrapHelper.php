@@ -2406,6 +2406,7 @@ class BootstrapHelper extends AppHelper {
 
 	
 		$html = '';
+		$buttonToolbar = array();
 		$heading = '';
 		$bodyHtml = '';
 		
@@ -2550,6 +2551,8 @@ class BootstrapHelper extends AppHelper {
 									'escape' => false
 							)
 						) : $value );
+					} elseif ($this->startsWith($key, 'buttons')) {
+						$buttonToolbar[] = $value;
 					} elseif ($this->startsWith($key, 'body')) {
 						$html .= $this->Html->div(
 							( 'panel-' . 'body' ), 
@@ -2591,21 +2594,29 @@ class BootstrapHelper extends AppHelper {
 		if ( !empty($heading) ) {
 			$headingHtml = $this->Html->div(
 				'panel-heading', 
-/*
 				$this->right(
-					$this->buttons(
-						array(
-							array(
-								'icon' => 'remove'
-							)
-						), 
+					$this->buttonToolbar(
+						$buttonToolbar, 
 						array(
 							'size' => 'xs', 
 							'color' => $params['color']
 						)
 					)
 				) . 
-*/
+				$heading
+			);
+		} else {
+			$headingHtml = $this->Html->div(
+				'panel-buttons', 
+				$this->right(
+					$this->buttonToolbar(
+						$buttonToolbar, 
+						array(
+							'size' => 'xs', 
+							'color' => $params['color']
+						)
+					)
+				) . 
 				$heading
 			);
 		}
