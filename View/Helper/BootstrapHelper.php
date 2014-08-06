@@ -2351,7 +2351,7 @@ class BootstrapHelper extends AppHelper {
 					array(
 						'collapse' => $params['collapse'], 
 						'parent' => ( ($params['accordion'] && $params['collapse']) ? $params['id'] : null ), 
-						'collapseId' => 'collapse' . $i, 
+						'collapseId' => 'collapse' . uniqid(), 
 						'active' => ( $params['accordion'] && $i === 0 ? $defaultActive : false )
 					), 
 					( isset($subContent['params']) ? (array)$subContent['params'] : array() )
