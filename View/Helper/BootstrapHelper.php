@@ -498,7 +498,7 @@ class BootstrapHelper extends AppHelper {
 			$rowHtml = null;
 			foreach ($content as $contentRow) {
 				$cellsHtml = null;
-				foreach ($contentRow as $cellKey => $cellValue) {
+				foreach ((array)$contentRow as $cellKey => $cellValue) {
 					if ( !$params['ignore'] || !in_array($cellKey, $params['ignore']) ) {
 						if (is_array($cellValue)) {
 							$cellsHtml .= (!in_array($cellKey, array('rowcolor'))?$this->Html->tag(
