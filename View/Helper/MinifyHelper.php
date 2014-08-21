@@ -52,6 +52,7 @@ class MinifyHelper extends AppHelper {
 			$minifyPath[] = $this->Html->url(
 				Router::url(array_merge(
 					array(
+						'admin' => false, 
 						'plugin' => 'cake_bootstrap', 
 						'controller' => 'minify', 
 						'action' => 'css'
@@ -73,6 +74,7 @@ class MinifyHelper extends AppHelper {
 			$minifyPath[] = $this->Html->url(
 				Router::url(array_merge(
 					array(
+						'admin' => false, 
 						'plugin' => 'cake_bootstrap', 
 						'controller' => 'minify', 
 						'action' => 'js'
