@@ -479,7 +479,7 @@ class BootstrapHelper extends AppHelper {
 			), 
 			$params
 		);
-		
+	
 		$html = '';
 		if (!empty($content) && isset($content[0])) {
 			$tableHeadArr = array_keys($content[0]);
