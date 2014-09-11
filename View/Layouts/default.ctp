@@ -43,6 +43,7 @@ $body = ( Configure::check('navbar.menus') ? $this->Bootstrap->navbar(
 	) . 
 	$this->fetch('script') . 
 	$this->fetch('elementScript') . 
+	$this->fetch('helperScript') . 
 	
 	$this->Js->writeBuffer(
 		array(

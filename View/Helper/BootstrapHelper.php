@@ -1340,17 +1340,19 @@ class BootstrapHelper extends AppHelper {
 		$html = '';
 		
 		$buttonsArr = array();
-		foreach ($buttons as $button) {
-			if (!empty($button)) {
-				if ($params['justified']) {
-					$button['tag'] = 'a';
+		if (is_array($buttons)) {
+			foreach ($buttons as $button) {
+				if (!empty($button)) {
+					if ($params['justified']) {
+						$button['tag'] = 'a';
+					}
+					$buttonsArr[] = $this->button(
+						array_merge(
+							(array)$params, 
+							(array)$button
+						)
+					);
 				}
-				$buttonsArr[] = $this->button(
-					array_merge(
-						(array)$params, 
-						(array)$button
-					)
-				);
 			}
 		}
 		if (!empty($buttonsArr)) {
@@ -2724,7 +2726,7 @@ class BootstrapHelper extends AppHelper {
 		return $html;
 	}
 
-	private function parseSizeToClass ($param = null, $offset = null) {
+	public function parseSizeToClass ($param = null, $offset = null, $classPrepend = 'col') {
 		$sizeSteps = $this->sizeSteps;
 		
 		if ($param) {
@@ -2746,7 +2748,7 @@ class BootstrapHelper extends AppHelper {
 				} elseif (intval($size) >= 12) {
 					$size = 12;
 				}
-				$stepClass = ('col-' . $sizeStep . '-' . $size);
+				$stepClass = ($classPrepend . '-' . $sizeStep . '-' . $size);
 				$sizeClasses[] = $stepClass;
 				$i++;
 			}
