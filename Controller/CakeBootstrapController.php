@@ -5,7 +5,7 @@ class CakeBootstrapController extends CakeBootstrapAppController {
     public function beforeFilter() {
 		parent::beforeFilter();
 		Configure::write('navbar.params.brand', 'CakeBootstrap');
-		Configure::write('navbar.params.type', 'fixed');
+		Configure::write('navbar.params.type', 'static');
 		Configure::write('navbar.params.position', 'top');
 
 		Configure::write('navbar.menus.0', array(

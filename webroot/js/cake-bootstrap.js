@@ -17,7 +17,40 @@ function uiTools() {
 	    todayHighlight: true, 
 	    startView: 1
 	});
+	
 }
+$('.panel-collapse').on('show.bs.collapse', function (event) {
+	$toggleButton = $('.' + event.target.id + '-toggle');
+	if( $toggleButton.hasClass('collapsed') ) {
+		$toggleButton.find('span.glyphicon-chevron-down').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-right');
+	} else {
+		$toggleButton.find('span.glyphicon-chevron-right').removeClass('glyphicon-chevron-right').addClass('glyphicon-chevron-down');
+	}
+});
+$('.panel-collapse').on('shown.bs.collapse', function (event) {
+	$toggleButton = $('.' + event.target.id + '-toggle');
+	if( $toggleButton.hasClass('collapsed') ) {
+		$toggleButton.find('span.glyphicon-chevron-down').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-right');
+	} else {
+		$toggleButton.find('span.glyphicon-chevron-right').removeClass('glyphicon-chevron-right').addClass('glyphicon-chevron-down');
+	}
+});
+$('.panel-collapse').on('hide.bs.collapse', function (event) {
+	$toggleButton = $('.' + event.target.id + '-toggle');
+	if( $toggleButton.hasClass('collapsed') ) {
+		$toggleButton.find('span.glyphicon-chevron-down').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-right');
+	} else {
+		$toggleButton.find('span.glyphicon-chevron-right').removeClass('glyphicon-chevron-right').addClass('glyphicon-chevron-down');
+	}
+});
+$('.panel-collapse').on('hidden.bs.collapse', function (event) {
+	$toggleButton = $('.' + event.target.id + '-toggle');
+	if( $toggleButton.hasClass('collapsed') ) {
+		$toggleButton.find('span.glyphicon-chevron-down').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-right');
+	} else {
+		$toggleButton.find('span.glyphicon-chevron-right').removeClass('glyphicon-chevron-right').addClass('glyphicon-chevron-down');
+	}
+});
 
 $(function(){
 	uiTools();

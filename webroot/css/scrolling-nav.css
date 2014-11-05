@@ -1,0 +1,199 @@
+body {
+    width: 100%;
+    height: 100%;
+}
+
+html {
+    width: 100%;
+    height: 100%;
+}
+
+/*
+@media(min-width:767px) {
+    .navbar-scrolling {
+        -webkit-transition: 
+        	background .5s ease-in-out,
+        	height .5s ease-in-out, 
+        	padding .5s ease-in-out;
+        -moz-transition: 
+        	background .5s ease-in-out,
+        	height .5s ease-in-out, 
+        	padding .5s ease-in-out;
+        transition: 
+        	background .5s ease-in-out,
+        	height .5s ease-in-out, 
+        	padding .5s ease-in-out;
+    }
+    
+    .navbar .container, 
+    .navbar .navbar-header, 
+    .navbar .navbar-brand {
+	    height: 100%;
+    }
+    
+    .navbar-scrolling + header {
+	    padding-top: 250px;
+    }
+
+	.top-nav-small {
+        height: 60px;
+	}
+	.top-nav-big {
+		background-color: transparent;
+		border-color: transparent;
+		height: 60px;
+	}
+}
+*/
+.navbar-scrolling {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 3;
+/* 	background-color: rgba(255, 255, 255, 1); */
+/* 	font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; */
+}
+.navbar-scrolling .navbar-brand {
+	padding: 0;
+	margin: 0;
+	height: auto;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	padding-right: 15px;
+}
+.navbar .navbar-brand img {
+	height: 20px;
+}
+.navbar-scrolling.at-top .navbar-brand img {
+/* 	height: 20px; */
+/* 	height: 500px; */
+}
+.navbar-scrolling + header {
+	padding-top: 50px; /* Margin + img height */
+}
+
+.navbar-scrolling .nav li a {
+/* 	text-transform: uppercase; */
+/* 	font-size: 12px; */
+/* 	font-weight: 800; */
+/* 	letter-spacing: 1px; */
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+@media only screen and (min-width: 768px) {
+	.navbar-scrolling {
+/* 		background-color: rgba(255, 255, 255, 0.75); */
+		-webkit-transition: background-color 0.3s;
+		-moz-transition: background-color 0.3s;
+		transition: background-color 0.3s;
+		-webkit-transition: padding-top 0.3s;
+		-moz-transition: padding-top 0.3s;
+		transition: padding-top 0.3s;
+		/* Force Hardware Acceleration in WebKit */
+		-webkit-transform: translate3d(0, 0, 0);
+		-moz-transform: translate3d(0, 0, 0);
+		-ms-transform: translate3d(0, 0, 0);
+		-o-transform: translate3d(0, 0, 0);
+		transform: translate3d(0, 0, 0);
+		-webkit-backface-visibility: hidden;
+		backface-visibility: hidden;
+	}
+	.navbar-scrolling.at-top {
+/* 		background-color: transparent; */
+/* 		border-color: transparent; */
+/* 		border: 0; */
+	}
+	.navbar-scrolling .navbar-brand {
+		padding-left: 0px;
+	}
+	.navbar-scrolling.at-top .navbar-brand img {
+		height: 250px;
+		-webkit-transition: height 0.3s;
+	}
+	.navbar-scrolling + header {
+		padding-top: 250px;
+	}
+	.navbar-scrolling.is-fixed {
+		/* when the user scrolls down, we hide the header right above the viewport */
+		position: fixed;
+		top: -52px; /* Margin + img height */
+/* 		background-color: rgba(255, 255, 255, 0.75); */
+/* 		border-bottom: 1px solid #f2f2f2; */
+		-webkit-transition: -webkit-transform 0.3s;
+		-moz-transition: -moz-transform 0.3s;
+		transition: transform 0.3s;
+/* 		border-color: transparent; */
+	}
+	.navbar-scrolling.is-fixed .navbar-brand {
+/* 		padding-top: 5px; */
+/* 		padding-bottom: 5px; */
+	}
+  .navbar-scrolling.is-fixed .navbar-brand img{
+/* 		height: 40px; */
+  }
+  .navbar-scrolling.is-fixed .navbar-brand:hover,
+  .navbar-scrolling.is-fixed .navbar-brand:focus {
+/*     color: #0085a1; */
+  }
+  .navbar-scrolling.is-fixed .nav li a {
+/*     color: #404040; */
+  }
+  .navbar-scrolling.is-fixed .nav li a:hover,
+  .navbar-scrolling.is-fixed .nav li a:focus {
+/*     color: #0085a1; */
+  }
+  .navbar-scrolling.is-visible {
+    /* if the user changes the scrolling direction, we show the header */
+    -webkit-transform: translate3d(0, 100%, 0);
+    -moz-transform: translate3d(0, 100%, 0);
+    -ms-transform: translate3d(0, 100%, 0);
+    -o-transform: translate3d(0, 100%, 0);
+    transform: translate3d(0, 100%, 0);
+  }
+}
+
+/* Demo Sections - You can use these as guides or delete them - the scroller will work with any sort of height, fixed, undefined, or percentage based.
+The padding is very important to make sure the scrollspy picks up the right area when scrolled to. Adjust the margin and padding of sections and children 
+of those sections to manage the look and feel of the site. */
+
+header {
+	display: table;
+	width: 100%;
+	height: 100%;
+	background-repeat: no-repeat;
+	background-position-x: center;
+	background-position-y: center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+.intro-section {
+	height: 100%;
+	padding-top: 150px;
+	text-align: center;
+	background: #fff;
+}
+
+.about-section {
+	height: 100%;
+	padding-top: 150px;
+	text-align: center;
+	background: #eee;
+}
+
+.services-section {
+	height: 100%;
+	padding-top: 150px;
+	text-align: center;
+	background: #fff;
+}
+
+.contact-section {
+    height: 100%;
+    padding-top: 150px;
+    text-align: center;
+    background: #eee;
+}

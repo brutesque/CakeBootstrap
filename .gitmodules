@@ -22,3 +22,6 @@
 [submodule "webroot/imagefill"]
 	path = webroot/imagefill
 	url = https://github.com/johnpolacek/imagefill.js.git
+[submodule "webroot/FitText"]
+	path = webroot/FitText
+	url = https://github.com/davatron5000/FitText.js.git

@@ -1,3 +1,8 @@
+
+.navbar-fixed-top {
+	margin: 0px !important;
+}
+
 /* Cover */
 
 html, body {
@@ -36,23 +41,90 @@ html, body {
 }
 
 /* panel-overlay */
-
-.panel-overlay {
-	display: block;
+.panel {
+	position: relative;
+}
+.panel > .panel-heading.heading-overlay {
 	position: absolute;
-	left: 0px;
-	top: 0px;
-	z-index: 99;
-/*
-	width: 100%;
-	height: 100%; 
-*/
+	left: 0%;
+	right: 0%;
+	top: -100%;
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+}
+.panel:hover > .panel-heading.heading-overlay {
+	top: 0%;
+}
+.panel > .panel-footer.footer-overlay {
+	position: absolute;
+	left: 0%;
+	right: 0%;
+	bottom: -100%;
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+}
+.panel:hover > .panel-footer.footer-overlay {
+	bottom: 0%;
+}
+
+.panel > .panel-overlay {
+	pointer-events: none;
+	position: absolute;
+	top: 0%;
+	left: 0%;
+	right: 0%;
+	bottom: 0%;
+	z-index: 4;
+	overflow: hidden;
+
+}
+.panel:hover > .panel-overlay > * {
+	position: relative;
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+}
+.panel:hover > .panel-overlay > * {
+	opacity: 0;
+/* 	left: 100%; */
+}
+
+.panel > .panel-overlay > .overlay-inner {
+	text-align: center;
+	background-color: red;
+	min-width: 100%;
+	min-height: 100%;
+	text-align: center;
+}
+.panel > .panel-overlay > .overlay-inner > * {
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: auto;
+	margin-bottom: auto;
+	vertical-align: middle;
+	display: table-cell;
+	line-height: normal;
 }
 
 /* panel-content */
 .panel-content > * {
 	margin-bottom: 0px;
 }
+
+/*
+.panel > .panel-collapse {
+	z-index: auto;
+}
+
+.panel > .panel-collapse.collapsing {
+	z-index: 999999;
+}
+*/
 
 .panel>.panel-content+.table, .panel>.panel-content+.table-responsive {
     border-top: 1px solid #ddd
@@ -143,3 +215,15 @@ li.select2-search-choice {
 	margin: 5px 0px 0px 5px !important;
 }
 
+span.buttons {
+	line-height: 38px;
+}
+span.buttons-xs {
+	line-height: 26px;
+}
+span.buttons-sm {
+	line-height: 34px;
+}
+span.buttons-lg {
+	line-height: 48px;
+}

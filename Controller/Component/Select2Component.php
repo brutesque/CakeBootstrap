@@ -22,7 +22,7 @@ class Select2Component extends Component {
 		return json_encode($newdata);
 	}
 
-	public function reformatTags(Controller $model, $options = array()) {
+	public function reformatTags(Controller $controller, $options = array()) {
 		$options = array_merge(
 			array(
 				'model' => false, 
@@ -34,9 +34,9 @@ class Select2Component extends Component {
 		);
 		$assocModel = $options['model'];
 
-    	if ($assocModel && Hash::check($model->request->data, ($assocModel . '.' . $assocModel) ) && is_string($model->request->data[$assocModel][$assocModel])) {
+    	if ($assocModel && Hash::check($controller->request->data, ($assocModel . '.' . $assocModel) ) && is_string($controller->request->data[$assocModel][$assocModel])) {
 
-    		$values = explode($options['separator'], $model->request->data[$assocModel][$assocModel]);
+    		$values = explode($options['separator'], $controller->request->data[$assocModel][$assocModel]);
 
     		$newRecords = array();
     		$existingRecords = array();
@@ -45,7 +45,7 @@ class Select2Component extends Component {
 	    		$record_id = null;
 		    	if(!is_numeric($value) && !empty($value)) {
 
-		    		$modelRecord = $model->$assocModel->find('first', array(
+		    		$modelRecord = $controller->$assocModel->find('first', array(
 		    			'conditions' => array(
 		    				$options['field'] => $value
 		    			)
@@ -78,24 +78,28 @@ class Select2Component extends Component {
 
 	    	}
 	    	if (!empty($newRecords)) {
-		    	$model->$assocModel->saveMany($newRecords);
-		    	$newRecords = $model->$assocModel->find('all', array(
+		    	$controller->$assocModel->saveMany($newRecords);
+		    	$newRecords = $controller->$assocModel->find('all', array(
 		    		'fields' => array(
-		    			'id'
+		    			'id', 
+		    			$options['field']
 		    		), 
 		    		'conditions' => array(
 		    			$options['field'] => Hash::extract($newRecords, ( '{n}.' . $assocModel . '.' . $options['field'] ) )
 		    		)
 		    	));
-		    	foreach ($newRecords as $new) {
-			    	$existingRecords[] = $new[$assocModel]['id'];
-		    	}
+		    	foreach ($newRecords as $new ) {
+			    	foreach ($values as $i => $value) {
+				    	if (!is_numeric($value) && !empty($value) && ($value === $new[$assocModel][$options['field']]) ) {
+				 		   	$values[$i] = $new[$assocModel]['id'];
+				    	}
+			    	}
+			    }
 	    	}
-	    	$model->request->data[$assocModel][$assocModel] = (isset($existingRecords) ? $existingRecords : array());
+	    	$controller->request->data[$assocModel][$assocModel] = $values;
     	}
 
-
-		return $model->request->data;
+		return $controller->request->data;
 	}
 
 }

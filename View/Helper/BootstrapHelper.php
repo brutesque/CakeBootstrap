@@ -11,30 +11,31 @@ class BootstrapHelper extends AppHelper {
 
 	private $sizeSteps = array('xs', 'sm', 'md', 'lg');
 	private $colWidth = array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
-	private $bodyParams = array();
+	public $bodyParams = array();
 
+	private $modals = array();
 
 	public function __construct (View $view, $settings = array()) {
         $settings = Hash::merge(
         	array(
         		'margin' => 5, 
         		'border' => 1, 
-        		'theme' => false
-/*         		'theme' => 'CakeBootstrap./bootstrap/css/bootstrap-theme.min' */
-/*         		'theme' => 'CakeBootstrap./bootswatch/amelia/bootstrap.min' */
-/*         		'theme' => 'CakeBootstrap./bootswatch/cerulean/bootstrap.min' */
-/*         		'theme' => 'CakeBootstrap./bootswatch/cosmo/bootstrap.min' */
-/*         		'theme' => 'CakeBootstrap./bootswatch/cyborg/bootstrap.min' */
-/*         		'theme' => 'CakeBootstrap./bootswatch/flatly/bootstrap.min' */
-/*         		'theme' => 'CakeBootstrap./bootswatch/journal/bootstrap.min' */
-/*         		'theme' => 'CakeBootstrap./bootswatch/lumen/bootstrap.min' */
-/*         		'theme' => 'CakeBootstrap./bootswatch/readable/bootstrap.min' */
-/*         		'theme' => 'CakeBootstrap./bootswatch/simplex/bootstrap.min' */
-/*         		'theme' => 'CakeBootstrap./bootswatch/slate/bootstrap.min' */
-/*         		'theme' => 'CakeBootstrap./bootswatch/spacelab/bootstrap.min' */
-/*         		'theme' => 'CakeBootstrap./bootswatch/superhero/bootstrap.min' */
-/*         		'theme' => 'CakeBootstrap./bootswatch/united/bootstrap.min' */
-/*         		'theme' => 'CakeBootstrap./bootswatch/yeti/bootstrap.min' */
+        		'theme' => false, 
+//         		'theme' => 'CakeBootstrap./bootstrap/css/bootstrap-theme.min'
+//         		'theme' => 'CakeBootstrap./bootswatch/amelia/bootstrap.min'
+//         		'theme' => 'CakeBootstrap./bootswatch/cerulean/bootstrap.min'
+//         		'theme' => 'CakeBootstrap./bootswatch/cosmo/bootstrap.min'
+//         		'theme' => 'CakeBootstrap./bootswatch/cyborg/bootstrap.min'
+//         		'theme' => 'CakeBootstrap./bootswatch/flatly/bootstrap.min'
+//         		'theme' => 'CakeBootstrap./bootswatch/journal/bootstrap.min'
+//         		'theme' => 'CakeBootstrap./bootswatch/lumen/bootstrap.min'
+//         		'theme' => 'CakeBootstrap./bootswatch/readable/bootstrap.min'
+//         		'theme' => 'CakeBootstrap./bootswatch/simplex/bootstrap.min'
+//         		'theme' => 'CakeBootstrap./bootswatch/slate/bootstrap.min'
+//         		'theme' => 'CakeBootstrap./bootswatch/spacelab/bootstrap.min'
+//         		'theme' => 'CakeBootstrap./bootswatch/superhero/bootstrap.min'
+//         		'theme' => 'CakeBootstrap./bootswatch/united/bootstrap.min'
+//         		'theme' => 'CakeBootstrap./bootswatch/yeti/bootstrap.min'
         	), 
         	$settings
         );
@@ -49,7 +50,10 @@ class BootstrapHelper extends AppHelper {
 				array(
 					'CakeBootstrap./jquery-ui-1.10.4/css/ui-lightness/jquery-ui-1.10.4.min', 
 					'CakeBootstrap./bootstrap/dist/css/bootstrap.min', 
-					( isset($this->settings['theme']) ? $this->settings['theme'] : '' )
+					( isset($this->settings['theme']) ? $this->settings['theme'] : '' ), 
+					'CakeBootstrap./select2/select2', 
+					'CakeBootstrap./bootstrap-datepicker/css/datepicker', 
+					'CakeBootstrap.scrolling-nav'
 				)
 			), 
 			array(
@@ -61,8 +65,6 @@ class BootstrapHelper extends AppHelper {
 			array_filter(
 				array(
 					'CakeBootstrap./bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min', 
-					'CakeBootstrap./select2/select2', 
-					'CakeBootstrap./bootstrap-datepicker/css/datepicker', 
 					'CakeBootstrap.cake-bootstrap'
 				)
 			), 
@@ -83,7 +85,8 @@ class BootstrapHelper extends AppHelper {
 		);
 		$this->Minify->script(
 			array(
-				'CakeBootstrap.modernizr.custom.16031', 
+				'BruteStrap./MultiLevelPushMenu/js/modernizr.custom', 
+/* 				'CakeBootstrap.modernizr.custom.16031',  */
 				'CakeBootstrap./jquery-ui-1.10.4/js/jquery-ui-1.10.4.min', 
 				'CakeBootstrap./bootstrap/dist/js/bootstrap.min', 
 				'CakeBootstrap./autosize/jquery.autosize.min', 
@@ -93,7 +96,8 @@ class BootstrapHelper extends AppHelper {
 				'CakeBootstrap.jquery.alterclass', 
 				'CakeBootstrap./select2/select2', 
 				'CakeBootstrap./bootstrap-datepicker/js/bootstrap-datepicker', 
-				'CakeBootstrap.cake-bootstrap'
+				'CakeBootstrap.cake-bootstrap', 
+				'CakeBootstrap.scrolling-nav'
 			), 
 			array(
 				'inline' => false, 
@@ -196,35 +200,72 @@ class BootstrapHelper extends AppHelper {
 	//	Responsive images
 	//	Images in Bootstrap 3 can be made responsive-friendly via the addition of the .img-responsive class. 
 	//	This applies max-width: 100%; and height: auto; to the image so that it scales nicely to the parent element.
-	public function image ( $path = null, $params = array(), $options = array() ) {
+	public function image ( $path = null, $params = null, $options = null ) {
 		$params = array_merge(
 			array(
 				'responsive' => true, 
 				'border' => false, // rounded, circle, thumbnail
-				'grow' => true
+				'grow' => true, 
+				'width' => null, 
+				'height' => null, 
+				'style' => null
 			), 
-			$params
+			(array)$params
 		);
 		if ($path === null) {
 			$path = 'CakeBootstrap.placeholder-100x100.jpg';
 		}
-		
-		$options['class'] = implode(' ', array_filter(array(
-			(isset($options['class'])?$options['class']:null), 
-			($params['responsive']?'img-responsive':null), 
-			($params['border']?('img-' . $params['border']):null)
-		)));
-		$options['style'] = (($params['grow'])?$this->Html->style(array(
-			'width' => '100%'
-		)):false);
 
-		if ($path !== false) {
+		if ( !is_array($path) && is_null($params['width']) && is_null($params['height']) ) {
+			$imagePath = filter_var($path, FILTER_VALIDATE_URL);
+
+			if (!$imagePath) {
+				$imagePath = $this->assetPath($path, 'img');
+			}
+			if (!$imagePath) {
+				$imagePath = realpath($path);
+			}
+			if ($imagePath) {
+				$imageSize = getimagesize($imagePath);
+				if ($imageSize) {
+					$params = array_merge(
+						(array)$params, 
+						array(
+							'width' => intval($imageSize[0]), 
+							'height' => intval($imageSize[1])
+						)
+					);
+				}
+			}
+		}
+		
+		$options = array_merge(
+			array_filter(array(
+				'class' => implode(' ', array_filter(array(
+					(isset($options['class'])?$options['class']:null), 
+					(isset($params['class'])?$params['class']:null), 
+					($params['responsive']?'img-responsive':null), 
+					($params['border']?('img-' . $params['border']):null)
+				))), 
+				'style' => (($params['grow'])?$this->Html->style(array_merge(
+					array(
+						'width' => '100%'
+					), 
+					(array)$params['style']
+				)):null), 
+				'width' => intval($params['width']), 
+				'height' => intval($params['height'])
+			)), 
+			(array)$options
+		);
+		
+		$html = '';
+
+		if ($path) {
 			$html = $this->Html->image(
 				$path, 
 				$options
 			);
-		} else {
-			$html = '';
 		}
 		
 		return $html;
@@ -237,15 +278,17 @@ class BootstrapHelper extends AppHelper {
 			), 
 			(array)$params
 		);
-		
-		$html = $this->Html->div(
-			implode(' ', array_filter(array(
-				'row', 
-				$params['class']
-			))), 
-			$content, 
-			$options
-		);
+		$html = '';
+		if (!empty($content)) {
+			$html = $this->Html->div(
+				implode(' ', array_filter(array(
+					'row', 
+					$params['class']
+				))), 
+				$content, 
+				$options
+			);
+		}
 		return $html;
 	}
 
@@ -261,7 +304,7 @@ class BootstrapHelper extends AppHelper {
 		$sizeClasses = $this->parseSizeToClass( $params['size'], $params['offset'] );
 
 		$html = '';
-		if (is_array($content)) {
+		if ( is_array($content) ) {
 			foreach($content as $contentChunk) {
 				$contentChunkArr = (array)$contentChunk;
 				$html .= $this->col(
@@ -276,7 +319,7 @@ class BootstrapHelper extends AppHelper {
 					)
 				);
 			}
-		} else {
+		} elseif ( !empty($content) ) {
 			$html = $this->Html->div(
 				implode(' ', array_filter(array(
 					$sizeClasses, 
@@ -959,7 +1002,9 @@ class BootstrapHelper extends AppHelper {
 			array(
 				'class' => implode(' ', array_filter(array(
 					( isset($options['class']) ? $options['class'] : null), 
-					( $params['pull-right'] ? 'pull-right' : null )
+					( $params['pull-right'] ? 'pull-right' : null ), 
+					'buttons', 
+					( $params['size'] ? 'buttons-' . $params['size']  : null)
 				)))
 			)
 		);
@@ -978,7 +1023,11 @@ class BootstrapHelper extends AppHelper {
 			}
 		}
 		
-		$html = (!empty($buttonsArr) ? $this->Html->tag( 'span', implode(' ', $buttonsArr), $options ) : $html );
+		$html = (!empty($buttonsArr) ? $this->Html->tag(
+			'span', 
+			implode(' ', $buttonsArr), 
+			$options
+		) : $html );
 
 		return $html;
 	}
@@ -1008,13 +1057,24 @@ class BootstrapHelper extends AppHelper {
 				'navbar-btn' => false, 
 				'target' => false, 
 				'class' => null, 
-				'name' => false
+				'name' => false, 
+				'modal' => false
 			), 
 			$button
 		);
 
 		if ($button['dropdown'] && !$button['split']) {
 			$button['tag'] = 'button';
+		}
+		
+		if ($button['modal']) {
+
+			if (!in_array($button['modal'], array('sm', 'lg'))) {
+				$button['modal'] = 'md';
+			}
+
+			$button['data']['toggle'] = 'modal';
+			$button['data']['target'] = '#modal-' . $button['modal'];
 		}
 
 		if ($button['url']) {
@@ -1142,7 +1202,27 @@ class BootstrapHelper extends AppHelper {
 				$html
 			);
 		}
-		
+		if ($button['modal']) {
+			$this->modals[$button['modal']] = array(
+				'header' => 'Modal', 
+				'body' => '...', 
+				'footer' => $this->buttons(
+					array(
+						array(
+							'label' => 'Close', 
+							'data' => array(
+								'dismiss' => 'modal'
+							)
+						), 
+						array(
+							'label' => 'Save changes', 
+							'color' => 'primary'
+						)
+					)
+				)
+			); 
+
+		}
 		
 		return $html;
 	}
@@ -1265,9 +1345,12 @@ class BootstrapHelper extends AppHelper {
 		return $html;
 	}
 
-	public function right ( $content ) {
-
-		$html = $this->Html->tag('span', $content, array('class' => 'pull-right'));
+	public function right ( $content = null ) {
+		
+		$html = '';
+		if (!empty($content)) {
+			$html = $this->Html->tag('span', $content, array('class' => 'pull-right'));
+		}
 		
 		return $html;
 	}
@@ -1373,7 +1456,7 @@ class BootstrapHelper extends AppHelper {
 		return $html;
 	}
 	
-	public function buttonToolbar ( $buttonGroups, $params = array(), $options = array() ) {
+	public function buttonToolbar ( $buttonGroups = null, $params = array(), $options = array() ) {
 		
 		$options = array_merge(
 			array(
@@ -1384,20 +1467,21 @@ class BootstrapHelper extends AppHelper {
 		);
 		
 		$html = '';
-		foreach ($buttonGroups as $buttons) {
+		foreach ((array)$buttonGroups as $buttons) {
 			if (!empty($buttons)) {
 				$html .= $this->buttonGroup($buttons, $params);
 			}
 		}
-		
-		$html = $this->Html->div(
-			implode(' ', array_filter(array(
-				'btn-toolbar', 
-				$options['class']
-			))), 
-			$html, 
-			$options
-		);
+		if (!empty($html)) {
+			$html = $this->Html->div(
+				implode(' ', array_filter(array(
+					'btn-toolbar', 
+					$options['class']
+				))), 
+				$html, 
+				$options
+			);
+		}
 		
 		return $html;
 	}
@@ -1610,91 +1694,103 @@ class BootstrapHelper extends AppHelper {
 		
 		$html = '';
 		
-		foreach ($content as $value) {
-			if (!empty($value)) {
-				$value = array_merge(
-					array(
-						'url' => '#', 
-						'active' => false, 
-						'disabled' => false, 
-						'dropdown' => false, 
-						'role' => ( $params['type']=='tabs' ? 'tab' : null), 
-						'data-toggle' => ( isset($value['dropdown']) && $value['dropdown'] ? 'dropdown' : ( $params['type']=='tabs' ? 'tab' : null ) )
-					), 
-					$value
-				);
-				
-				$html .= $this->Html->tag(
-					'li', 
-					$this->Html->link(
-						( isset($value['icon']) ? ($this->icon($value['icon']) . ' ') : '' ) . 
-						( isset($value['label']) ? $value['label'] : '' ) . 
-						( $value['dropdown'] ? ( '&nbsp;' . $this->caret() ) : null), 
-						$value['url'], 
+		if (!empty($content)) {
+			foreach ($content as $value) {
+				if (!empty($value)) {
+					$value = array_merge(
 						array(
-							'escape' => false, 
-							'class' => ( $value['dropdown'] ? 'dropdown-toggle' : null), 
-							'data-toggle' => $value['data-toggle'], 
-							'role' => ( $value['role'] ? $value['role'] : null )
+							'url' => '#', 
+							'active' => false, 
+							'disabled' => false, 
+							'class' => null, 
+							'dropdown' => false, 
+							'hidden' => false, 
+							'role' => ( $params['type']=='tabs' ? 'tab' : null), 
+							'data-toggle' => ( isset($value['dropdown']) && $value['dropdown'] ? 'dropdown' : ( $params['type']=='tabs' ? 'tab' : null ) )
+						), 
+						$value
+					);
+					
+					$html .= $this->Html->tag(
+						'li', 
+						$this->Html->link(
+							( isset($value['icon']) ? ($this->icon($value['icon']) . ' ') : '' ) . 
+							( isset($value['label']) ? $value['label'] : '' ) . 
+							( $value['dropdown'] ? ( '&nbsp;' . $this->caret() ) : null), 
+							$value['url'], 
+							array(
+								'escape' => false, 
+								'class' => implode(' ', array_filter(array(
+									$value['class'], 
+									( $value['dropdown'] ? 'dropdown-toggle' : null)
+								))), 
+								'data-toggle' => $value['data-toggle'], 
+								'role' => ( $value['role'] ? $value['role'] : null )
+							)
+						) . 
+						( $value['dropdown'] ? $this->dropdown($value['dropdown']) : null ), 
+						array(
+							'class' => implode(' ', array_filter(array(
+								( $value['active'] ? 'active' : null ), 
+								( $value['disabled'] ? 'disabled' : null ), 
+								( $value['dropdown'] ? 'dropdown' : null), 
+								( $value['hidden'] ? 'hidden' : null )
+							)))
 						)
-					) . 
-					( $value['dropdown'] ? $this->dropdown($value['dropdown']) : null ), 
-					array(
-						'class' => implode(' ', array_filter(array(
-							( $value['active'] ? 'active' : null ), 
-							( $value['disabled'] ? 'disabled' : null ), 
-							( $value['dropdown'] ? 'dropdown' : null)
-						)))
-					)
-				);
+					);
+				}
 			}
+
+			$html = $this->Html->tag(
+				$params['tag'], 
+				$html, 
+				array(
+					'class' => implode(' ', array_filter(array(
+						( ($params['type'] === 'breadcrumbs') ? 'breadcrumb' : 'nav' ), 
+						( ($params['type'] !== 'breadcrumbs') ? ( $params['navbar'] ? 'navbar-nav' : ('nav' . '-' . $params['type']) ) : null ), 
+						( $params['right'] ? 'navbar-right' : null ), 
+						( $params['stacked'] ? 'nav-stacked' : null ), 
+						( $params['justified'] ? 'nav-justified' : null )
+					)))
+				)
+			);
 		}
-		
-		$html = $this->Html->tag(
-			$params['tag'], 
-			$html, 
-			array(
-				'class' => implode(' ', array_filter(array(
-					( ($params['type'] === 'breadcrumbs') ? 'breadcrumb' : 'nav' ), 
-					( ($params['type'] !== 'breadcrumbs') ? ( $params['navbar'] ? 'navbar-nav' : ('nav' . '-' . $params['type']) ) : null ), 
-					( $params['right'] ? 'navbar-right' : null ), 
-					( $params['stacked'] ? 'nav-stacked' : null ), 
-					( $params['justified'] ? 'nav-justified' : null )
-				)))
-			)
-		);
 		
 		return $html;
 	}
 	
-	public function navbar ( $content, $params = array(), $options = array() ) {
+	public function navbar ( $content = null, $params = array(), $options = array() ) {
 		$params = array_merge(
 			array(
 				'brand' => false, 
 				'url' => '#', 
 				'image' => false, 
-				'brand-image' => false, 
-				'image-size' => array(1), 
-				'image-offset' => array(0), 
-/* 				'image' => false,  */
-				'type' => false,  // fixed, static, container
+				'type' => false,  // fixed, static, scrolling
 				'position' => 'top', // top, bottom
-				'color' => 'default' // default, inverse
+				'color' => 'default', // default, inverse, 
+				'class' => false, 
+				'bodyPadding' => 52
 			), 
 			$params
 		);
-
-/*
-		if ( ($params['type'] === 'fixed') && ($params['position'] === 'top') ) {
-			$this->bodyParams['padding-top'] = '70px';
-		} elseif ( ($params['type'] === 'fixed') && ($params['position'] === 'bottom') ) {
-			$this->bodyParams['padding-bottom'] = '70px';
+		$scrolling = false;
+		if ($params['type'] === 'scrolling') {
+			$params['type'] = 'fixed';
+			$params['class'] = implode(' ', array_filter(array(
+				$params['class'], 
+				'at-top'
+			)));
+			$scrolling = true;
 		}
-*/
+		if ( ($params['type'] === 'fixed') && ($params['position'] === 'top') && !$scrolling ) {
+			$this->bodyParams['padding-top'] = $params['bodyPadding'] . 'px';
+		} elseif ( ($params['type'] === 'fixed') && ($params['position'] === 'bottom') ) {
+			$this->bodyParams['padding-bottom'] = $params['bodyPadding'] . 'px';
+		}
 
 
 		$contentHtml = '';
-		foreach ($content as $key => $value) {
+		foreach ((array)$content as $key => $value) {
 			if (is_numeric($key)) {
 				$contentHtml .= $this->nav(
 					$value, 
@@ -1752,55 +1848,66 @@ class BootstrapHelper extends AppHelper {
 				$contentHtml .= $this->typo($value, array(), array('class' => 'navbar-text'));
 			}
 		}
+		$html = '';
 		
-		$html = $this->Html->tag(
-			'nav', 
-			( $params['image'] && !$params['brand-image'] ? $this->row(
-				$this->col(
-					$this->image(
-						$params['image']
-					), 
-					array(
-						'size' => $params['image-size'], 
-						'offset' => $params['image-offset']
-					)
-				)
-			) : '' ) . 
-			$this->Html->div(
-				'navbar-header', 
+		if (!empty($contentHtml)) {
+			$html .= $this->Html->tag(
+				'div', 
 				$this->navbarToggle('navbar-collapse') . 
-				( $params['brand'] || ($params['brand-image'] && $params['image']) ? $this->Html->link(
-					( ($params['brand-image'] && $params['image']) ? $this->image(
-						$params['image']
+				( $params['brand'] || $params['image'] ? $this->Html->link(
+					( $params['image'] ? $this->image(
+						$params['image'], 
+						array(
+							'grow' => false, 
+							'responsive' => false, 
+							'width' => null, 
+							'height' => null
+						)
 					) : $params['brand']), 
 					$params['url'], 
 					array(
-						'class' => 'navbar-brand', 
+						'class' => implode(' ', array_filter(array(
+							'navbar-brand', 
+							'page-scroll'
+						))), 
 						'escape' => false, 
 						'style' => $this->Html->style(array(
 							'height' => 'auto'
 						))
 					)
-				) : '' )
-			) . 
-			$this->Html->div(
+				) : '' ), 
+				array(
+					'class' => 'navbar-header page-scroll'
+				)
+			);
+			$html .= $this->Html->div(
 				'collapse navbar-collapse', 
 				$contentHtml, 
 				array(
 					'id' => 'navbar-collapse'
 				)
-			), 
-			array(
-				'class' => implode(' ', array_filter(array(
-					'navbar', 
-					'navbar-' . $params['color'], 
-					( $params['type'] ? ('navbar-' . $params['type'] . '-' . $params['position']) : null )
-				))), 
-				'role' => 'navigation'
-			)
-		);
-		if ( $params['type'] === 'container' ) {
-			$html = $this->container($html);
+			);
+		}
+
+		if (!empty($html)) {
+			if ( $params['type'] === 'fixed' ) {
+				$html = $this->container($html);
+			}
+	
+			$html = $this->Html->tag(
+				'nav', 
+				$html, 
+				array(
+					'class' => implode(' ', array_filter(array(
+						'navbar', 
+						'navbar-' . $params['color'], 
+						( $params['type'] ? ('navbar-' . $params['type'] . '-' . $params['position']) : null ), 
+						( $scrolling ? 'navbar-scrolling' : null ), 
+						$params['class']
+					))), 
+					'role' => 'navigation'
+				)
+			);
 		}
 
 		return $html;
@@ -1851,7 +1958,8 @@ class BootstrapHelper extends AppHelper {
 		
 		$params = array_merge(
 			array(
-				'color' => 'default'
+				'color' => 'default', 
+				'class' => null
 			), 
 			(array)$params
 		);
@@ -1861,7 +1969,7 @@ class BootstrapHelper extends AppHelper {
 				'class' => implode(' ', array_filter(array(
 					'label', 
 					( 'label-' . $params['color'] ), 
-					( isset($options['class']) ? $options['class'] : null )
+					( isset($params['class']) ? $params['class'] : null )
 				)))
 			)
 		);
@@ -2390,10 +2498,13 @@ class BootstrapHelper extends AppHelper {
 				'collapse' => false, 
 				'collapseId' => ( (isset($params['collapse']) && $params['collapse']) ? ('collapse' . uniqid()) : null ), 
 				'parent' => false, 
-				'active' => true
+				'active' => true, 
+				'height' => false
 			), 
 			(array)$params
 		);
+		$params['height'] = ( is_integer($params['height']) ? $params['height'] . 'px' : $params['height'] );
+		
 		$options = array_merge(
 			array(
 				'class' => implode(' ', array_filter(array(
@@ -2401,7 +2512,10 @@ class BootstrapHelper extends AppHelper {
 					'panel-' . $params['color'], 
 					$params['class']
 				))), 
-				'id' => $params['id']
+				'id' => $params['id'], 
+				'style' => $this->Html->style(array_filter(array(
+					'min-height' => ( $params['height'] ? $params['height'] : null )
+				)))
 			), 
 			(array)$options
 		);
@@ -2411,6 +2525,7 @@ class BootstrapHelper extends AppHelper {
 		$buttonToolbar = array();
 		$heading = '';
 		$bodyHtml = '';
+		$headingKey = false;
 		
 		if (is_array($content)) {
 			foreach ( $content as $key => $value ) {
@@ -2418,12 +2533,14 @@ class BootstrapHelper extends AppHelper {
 					if ($key === 'title') {
 						$heading .= $this->typo(
 							( $params['collapse'] ? $this->Html->link(
-								$this->icon('chevron-down') . '&nbsp;' . $value, 
+								( $params['active'] ? $this->icon('chevron-down', array('class' => 'hide-collapsed')) : 
+								$this->icon('chevron-right', array('class' => 'show-collapsed')) ) . '&nbsp;' . $value, 
 								'#' . $params['collapseId'], 
 								array(
-									'data-parent' => '#' . $params['parent'], 
+									'data-parent' => (!empty($params['parent']) ? '#' . $params['parent'] : null), 
 									'data-toggle' => 'collapse', 
-									'escape' => false
+									'escape' => false, 
+									'class' => ('collapse-button ' . $params['collapseId'] . '-toggle')
 								)
 							) : $value ), 
 							array(
@@ -2436,12 +2553,14 @@ class BootstrapHelper extends AppHelper {
 					} elseif ($key === 'h1') {
 						$heading .= $this->typo(
 							( $params['collapse'] ? $this->Html->link(
-								$this->icon('chevron-down') . '&nbsp;' . $value, 
+								( $params['active'] ? $this->icon('chevron-down', array('class' => 'hide-collapsed')) : 
+								$this->icon('chevron-right', array('class' => 'show-collapsed')) ) . '&nbsp;' . $value, 
 								'#' . $params['collapseId'], 
 								array(
-									'data-parent' => '#' . $params['parent'], 
+									'data-parent' => (!empty($params['parent']) ? '#' . $params['parent'] : null), 
 									'data-toggle' => 'collapse', 
-									'escape' => false
+									'escape' => false, 
+									'class' => ('collapse-button ' . $params['collapseId'] . '-toggle')
 								)
 							) : $value ), 
 							array(
@@ -2454,12 +2573,14 @@ class BootstrapHelper extends AppHelper {
 					} elseif ($key === 'h2') {
 						$heading .= $this->typo(
 							( $params['collapse'] ? $this->Html->link(
-								$this->icon('chevron-down') . '&nbsp;' . $value, 
+								( $params['active'] ? $this->icon('chevron-down', array('class' => 'hide-collapsed')) : 
+								$this->icon('chevron-right', array('class' => 'show-collapsed')) ) . '&nbsp;' . $value, 
 								'#' . $params['collapseId'], 
 								array(
-									'data-parent' => '#' . $params['parent'], 
+									'data-parent' => (!empty($params['parent']) ? '#' . $params['parent'] : null), 
 									'data-toggle' => 'collapse', 
-									'escape' => false
+									'escape' => false, 
+									'class' => ('collapse-button ' . $params['collapseId'] . '-toggle')
 								)
 							) : $value ), 
 							array(
@@ -2472,12 +2593,14 @@ class BootstrapHelper extends AppHelper {
 					} elseif ($key === 'h3') {
 						$heading .= $this->typo(
 							( $params['collapse'] ? $this->Html->link(
-								$this->icon('chevron-down') . '&nbsp;' . $value, 
+								( $params['active'] ? $this->icon('chevron-down', array('class' => 'hide-collapsed')) : 
+								$this->icon('chevron-right', array('class' => 'show-collapsed')) ) . '&nbsp;' . $value, 
 								'#' . $params['collapseId'], 
 								array(
-									'data-parent' => '#' . $params['parent'], 
+									'data-parent' => (!empty($params['parent']) ? '#' . $params['parent'] : null), 
 									'data-toggle' => 'collapse', 
-									'escape' => false
+									'escape' => false, 
+									'class' => ('collapse-button ' . $params['collapseId'] . '-toggle')
 								)
 							) : $value ), 
 							array(
@@ -2490,12 +2613,14 @@ class BootstrapHelper extends AppHelper {
 					} elseif ($key === 'h4') {
 						$heading .= $this->typo(
 							( $params['collapse'] ? $this->Html->link(
-								$this->icon('chevron-down') . '&nbsp;' . $value, 
+								( $params['active'] ? $this->icon('chevron-down', array('class' => 'hide-collapsed')) : 
+								$this->icon('chevron-right', array('class' => 'show-collapsed')) ) . '&nbsp;' . $value, 
 								'#' . $params['collapseId'], 
 								array(
-									'data-parent' => '#' . $params['parent'], 
+									'data-parent' => (!empty($params['parent']) ? '#' . $params['parent'] : null), 
 									'data-toggle' => 'collapse', 
-									'escape' => false
+									'escape' => false, 
+									'class' => ('collapse-button ' . $params['collapseId'] . '-toggle')
 								)
 							) : $value ), 
 							array(
@@ -2508,12 +2633,14 @@ class BootstrapHelper extends AppHelper {
 					} elseif ($key === 'h5') {
 						$heading .= $this->typo(
 							( $params['collapse'] ? $this->Html->link(
-								$this->icon('chevron-down') . '&nbsp;' . $value, 
+								( $params['active'] ? $this->icon('chevron-down', array('class' => 'hide-collapsed')) : 
+								$this->icon('chevron-right', array('class' => 'show-collapsed')) ) . '&nbsp;' . $value, 
 								'#' . $params['collapseId'], 
 								array(
-									'data-parent' => '#' . $params['parent'], 
+									'data-parent' => (!empty($params['parent']) ? '#' . $params['parent'] : null), 
 									'data-toggle' => 'collapse', 
-									'escape' => false
+									'escape' => false, 
+									'class' => ('collapse-button ' . $params['collapseId'] . '-toggle')
 								)
 							) : $value ), 
 							array(
@@ -2526,12 +2653,14 @@ class BootstrapHelper extends AppHelper {
 					} elseif ($key === 'h6') {
 						$heading .= $this->typo(
 							( $params['collapse'] ? $this->Html->link(
-								$this->icon('chevron-down') . '&nbsp;' . $value, 
+								( $params['active'] ? $this->icon('chevron-down', array('class' => 'hide-collapsed')) : 
+								$this->icon('chevron-right', array('class' => 'show-collapsed')) ) . '&nbsp;' . $value, 
 								'#' . $params['collapseId'], 
 								array(
-									'data-parent' => '#' . $params['parent'], 
+									'data-parent' => (!empty($params['parent']) ? '#' . $params['parent'] : null), 
 									'data-toggle' => 'collapse', 
-									'escape' => false
+									'escape' => false, 
+									'class' => ('collapse-button ' . $params['collapseId'] . '-toggle')
 								)
 							) : $value ), 
 							array(
@@ -2542,15 +2671,21 @@ class BootstrapHelper extends AppHelper {
 							)
 						);
 					} elseif ($this->startsWith($key, 'heading')) {
+						if ($key !== 'heading' ) {
+							$headingKey = $key;
+						}
 						$heading .= ( $params['collapse'] ? $this->Html->link(
 							( $params['active'] ? $this->icon('chevron-down', array('class' => 'hide-collapsed')) : 
 							$this->icon('chevron-right', array('class' => 'show-collapsed')) ) . 
 							'&nbsp;' . $value, 
 							'#' . $params['collapseId'], 
 							array(
-								'data-parent' => '#' . $params['parent'], 
+								'data-parent' => (!empty($params['parent']) ? '#' . $params['parent'] : null), 
 								'data-toggle' => 'collapse', 
-									'escape' => false
+								'escape' => false, 
+								'class' => implode(' ', array_filter(array(
+									('collapse-button ' . $params['collapseId'] . '-toggle')
+								)))
 							)
 						) : $value );
 					} elseif ($this->startsWith($key, 'buttons')) {
@@ -2567,7 +2702,10 @@ class BootstrapHelper extends AppHelper {
 						);
 					} elseif ($this->startsWith($key, 'footer')) {
 						$html .= $this->Html->div(
-							( 'panel-' . 'footer' ), 
+							implode(' ', array_filter(array(
+								( 'panel-' . 'footer' ), 
+								( $key !== 'footer' ? $key : null )
+							))), 
 							$value
 						);
 					} elseif ($this->startsWith($key, 'overlay')) {
@@ -2585,7 +2723,7 @@ class BootstrapHelper extends AppHelper {
 					}
 				}
 			}
-		} else {
+		} elseif (!empty($content)) {
 			$html = $this->Html->div(
 				( 'panel-body' ), 
 				$content
@@ -2594,33 +2732,45 @@ class BootstrapHelper extends AppHelper {
 
 		$headingHtml = '';
 		if ( !empty($heading) ) {
-			$headingHtml = $this->Html->div(
-				'panel-heading', 
+			$headingHtml = $this->Html->tag(
+				'div', 
 				$this->right(
 					$this->buttonToolbar(
 						$buttonToolbar, 
 						array(
 							'size' => 'xs', 
-							'color' => $params['color']
+							'color' => $params['color'], 
+							'pull-right' => true
 						)
 					)
 				) . 
-				$heading
+				$heading, 
+				array(
+					'class' => implode(' ', array_filter(array(
+						'panel-heading', 
+						$headingKey
+					)))
+				)
 			);
 		} else {
-			$headingHtml = $this->Html->div(
-				'panel-buttons', 
-				$this->right(
-					$this->buttonToolbar(
-						$buttonToolbar, 
-						array(
-							'size' => 'xs', 
-							'color' => $params['color']
+			if (!empty($buttonToolbar)) {
+				$headingHtml = $this->Html->tag(
+					'div', 
+					$this->right(
+						$this->buttonToolbar(
+							$buttonToolbar, 
+							array(
+								'size' => 'xs', 
+								'color' => $params['color']
+							)
 						)
+					) . 
+					$heading, 
+					array(
+						'class' => 'panel-buttons'
 					)
-				) . 
-				$heading
-			);
+				);
+			}
 		}
 
 
@@ -2639,12 +2789,14 @@ class BootstrapHelper extends AppHelper {
 			);
 		}
 
-		$html = $this->Html->tag(
-			'div', 
-			$headingHtml . 
-			$html, 
-			$options
-		);
+		if ( !empty($html) || $headingHtml ) {
+			$html = $this->Html->tag(
+				'div', 
+				$headingHtml . 
+				$html, 
+				$options
+			);
+		}
 
 		return $html;
 	}
@@ -2665,6 +2817,24 @@ class BootstrapHelper extends AppHelper {
 			$content, 
 			$options
 		);
+		
+		return $html;
+	}
+
+	public function parseModals () {
+		$html = '';
+		
+		if (!empty($this->modals)) {
+			foreach ($this->modals as $modalSize => $modal) {
+				$html .= $this->modal(
+					$modal, 
+					array(
+						'name' => 'modal-' . $modalSize, 
+						'size' => $modalSize
+					)
+				);
+			}
+		}
 		
 		return $html;
 	}
@@ -2797,7 +2967,7 @@ class BootstrapHelper extends AppHelper {
 				'panelClass' => null, 
 				'panelId' => null, 
 				'image' => false, 
-				'fixed' => true, 
+				'fixed' => false, 
 				'shadow' => ( isset($params['image']) && $params['image'] ? true : false ), 
 				'color' => ( isset($params['image']) && $params['image'] ? '#fff' : false ), 
 				'shadowSize' => 100, // in pixels
@@ -2950,6 +3120,34 @@ class BootstrapHelper extends AppHelper {
 		return $this->Html->tag('br');
 	}
 
+	public function header ( $content = null, $params = null, $options = null) {
+		$params = array_merge(
+			array(
+				'image' => null, 
+				'attachment' => 'scroll'
+			), 
+			(array)$params
+		);		
+		
+		$html = '';
+		if ($content) {
+			$html .= $this->Html->tag(
+				'header', 
+				$content, 
+				array(
+					'style' => $this->Html->style(array(
+						'background-image' => 'url(\'' . $params['image'] . '\')', 
+						'background-attachment' => $params['attachment']
+					))
+				)
+			);
+			
+			Configure::write('navbar.params.type', 'scrolling');
+			Configure::read('navbar');
+		}
+		return $html;
+	}
+
 	public function html ($content) {
 		$html = $this->Html->docType('html5') . $this->Html->tag(
 			'html', 
@@ -2982,10 +3180,10 @@ class BootstrapHelper extends AppHelper {
 		$style = '';
 		if (!empty($content)) {
 			foreach ($content as $selector => $properties) {
-				$style .= "\n" . $selector . " {\n" . $this->Html->style(
+				$style .= $selector . '{' . $this->Html->style(
 					(array)$properties, 
 					false
-				) . "\n}\n";
+				) . "}";
 			}
 			if ($params['tag']) {
 				$result .= $this->Html->tag(
@@ -3010,19 +3208,32 @@ class BootstrapHelper extends AppHelper {
 	}
 
 	public function body ($content, $params = array()) {
-		$params = array_merge(
+		$this->bodyParams = array_merge(
 			array(
+				'id' => false, 
 				'padding-top' => false, 
-				'padding-bottom' => false
+				'padding-bottom' => false, 
+				'data' => false
 			), 
 			$params, 
-			$this->bodyParams
+			$this->bodyParams, 
+			(array)Configure::read('body')
 		);
-		$options = array_filter(array(
-			'style' => $this->Html->style(array_filter(array(
-				'padding-top' => $params['padding-top'], 
-				'padding-bottom' => $params['padding-bottom']
-			)))
+		$dataArray = array();
+		if (is_array($this->bodyParams['data'])) {
+			foreach ($this->bodyParams['data'] as $key => $value) {
+				$dataArray['data-' . $key] = $value;
+			}
+		}
+		$options = array_filter(array_merge(
+			array(
+				'id' => $this->bodyParams['id'], 
+				'style' => $this->Html->style(array_filter(array(
+					'padding-top' => $this->bodyParams['padding-top'], 
+					'padding-bottom' => $this->bodyParams['padding-bottom']
+				)))
+			), 
+			$dataArray
 		));
 
 		return $this->Html->tag(
@@ -3034,6 +3245,50 @@ class BootstrapHelper extends AppHelper {
 	
 	private function startsWith ($haystack, $needle) {
 		return $needle === "" || strpos($haystack, $needle) === 0;
+	}
+
+	public function assetPath ($path = null, $type = null) {
+		$absolutePath = array(
+			'root' => APP, 
+			'plugin' => null, 
+			'pathPrefix' => null, 
+			'path' => null, 
+			'pathAppend' => null
+		);
+		switch ($type) {
+			case ('css') :
+				$absolutePath['pathPrefix'] = 'css';
+				break;
+			case ('js') :
+				$absolutePath['pathPrefix'] = 'js';
+				break;
+			case ('img') :
+				$absolutePath['pathPrefix'] = 'img';
+				break;
+			default:
+				break;
+		}
+		if (is_string($path)) {
+			$path = pluginSplit($path);
+			$absolutePath['plugin'] = (count($path) === 2 ? $path[0] : null);
+			$absolutePath['path'] = (count($path) === 2 ? $path[1] : $path[0]);
+			$absolutePath = implode(array_filter(array(
+				$absolutePath['root'], 
+				( $absolutePath['plugin'] ? ('Plugin' . DS . $absolutePath['plugin'] . DS) : null ), 
+				( 'webroot' ), 
+				( $absolutePath['path'][0] != '/' ? (DS . $absolutePath['pathPrefix'] . DS) : null ), 
+				$absolutePath['path'], 
+				$absolutePath['pathAppend']
+			)));
+	
+			if ( is_file( $absolutePath ) && is_readable( $absolutePath ) ) {
+				return $absolutePath;
+			} elseif ( is_file( $absolutePath . '.' . $type ) && is_readable( $absolutePath . '.' . $type ) ) {
+				return $absolutePath . '.' . $type;
+			}
+		}
+		
+		return false;
 	}
 
 }
