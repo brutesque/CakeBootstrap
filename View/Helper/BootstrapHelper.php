@@ -61,7 +61,7 @@ class BootstrapHelper extends AppHelper {
 				'media' => 'screen'
 			)
 		);
-		$this->Minify->css(
+		$this->Html->css(
 			array_filter(
 				array(
 					'CakeBootstrap./bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min', 
@@ -83,7 +83,7 @@ class BootstrapHelper extends AppHelper {
 				'once' => true
 			)
 		);
-		$this->Minify->script(
+		$this->Html->script(
 			array(
 				'BruteStrap./MultiLevelPushMenu/js/modernizr.custom', 
 /* 				'CakeBootstrap.modernizr.custom.16031',  */

@@ -30,7 +30,7 @@ class ImageToolsHelper extends AppHelper {
 	public function beforeLayout($layoutFile = null) {
 /*
 		if ( in_array(true, $this->loadResources) && !in_array(true, $this->resourcesLoaded) ) {
-			$this->Minify->css(
+			$this->Html->css(
 				array_filter(
 					array(
 						'CakeBootstrap.image-tools'

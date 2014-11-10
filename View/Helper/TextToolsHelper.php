@@ -55,7 +55,7 @@ class TextToolsHelper extends AppHelper {
 
 	public function beforeLayout($layoutFile = null) {
 		if ( in_array(true, $this->loadResources) && !in_array(true, $this->resourcesLoaded) ) {
-			$this->Minify->css(
+			$this->Html->css(
 				array_filter(
 					array(
 						'CakeBootstrap.text-tools'
@@ -68,7 +68,7 @@ class TextToolsHelper extends AppHelper {
 			);
 		}
 		if ( $this->loadResources['fitText'] && !$this->resourcesLoaded['fitText'] ) {
-			$this->Minify->script(
+			$this->Html->script(
 				array(
 					'CakeBootstrap./FitText/jquery.fittext'
 				), 
