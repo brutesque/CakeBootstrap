@@ -143,12 +143,12 @@ class BootstrapHelper extends AppHelper {
 			), 
 			implode(', ', array(
 
-				".navbar"
+				".navbar-static-top"
 
 			)) => array(
 
-				'margin-left' => ( $params['margin'] . 'px' ), 
-				'margin-right' => ( $params['margin'] . 'px' )
+				'margin-left' => ( 0 . 'px' ), 
+				'margin-right' => ( 0 . 'px' )
 
 			)
 		));
@@ -509,7 +509,7 @@ class BootstrapHelper extends AppHelper {
 		return $html;
 	}
 
-	public function table ($content = null, $params = array(), $options = array()) {
+	public function table ( $content = null, $params = null, $options = null ) {
 		$content = (array)$content;
 		$params = array_merge(
 			array(
@@ -520,7 +520,20 @@ class BootstrapHelper extends AppHelper {
 				'condensed' => true, 
 				'ignore' => false
 			), 
-			$params
+			(array)$params
+		);
+	
+		$options = array_merge(
+			array(
+				'class' => implode(' ', array_filter(array(
+					'table', 
+					($params['striped']?'table-striped':null), 
+					($params['bordered']?'table-bordered':null), 
+					($params['hover']?'table-hover':null), 
+					($params['condensed']?'table-condensed':null)
+				)))
+			), 
+			(array)$options
 		);
 	
 		$html = '';
@@ -577,15 +590,7 @@ class BootstrapHelper extends AppHelper {
 				'table', 
 				$theadHtml . 
 				$tbodyHtml, 
-				array(
-					'class' => implode(' ', array_filter(array(
-						'table', 
-						($params['striped']?'table-striped':null), 
-						($params['bordered']?'table-bordered':null), 
-						($params['hover']?'table-hover':null), 
-						($params['condensed']?'table-condensed':null)
-					)))
-				)
+				$options
 			);
 			
 			if ($params['responsive']) {
@@ -1861,8 +1866,8 @@ class BootstrapHelper extends AppHelper {
 						array(
 							'grow' => false, 
 							'responsive' => false, 
-							'width' => null, 
-							'height' => null
+							'width' => false, 
+							'height' => false
 						)
 					) : $params['brand']), 
 					$params['url'], 
@@ -3125,9 +3130,20 @@ class BootstrapHelper extends AppHelper {
 		$params = array_merge(
 			array(
 				'image' => null, 
-				'attachment' => 'scroll'
+				'attachment' => 'scroll', 
+				'height' => '100%'
 			), 
 			(array)$params
+		);		
+		$options = array_merge(
+			array(
+				'style' => $this->Html->style(array(
+					'background-image' => 'url(\'' . $params['image'] . '\')', 
+					'background-attachment' => $params['attachment'], 
+					'min-height' => $params['height']
+				))
+			), 
+			(array)$options
 		);		
 		
 		$html = '';
@@ -3135,12 +3151,7 @@ class BootstrapHelper extends AppHelper {
 			$html .= $this->Html->tag(
 				'header', 
 				$content, 
-				array(
-					'style' => $this->Html->style(array(
-						'background-image' => 'url(\'' . $params['image'] . '\')', 
-						'background-attachment' => $params['attachment']
-					))
-				)
+				$options
 			);
 			
 			Configure::write('navbar.params.type', 'scrolling');
