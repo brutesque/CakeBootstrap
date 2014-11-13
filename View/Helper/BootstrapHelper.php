@@ -525,11 +525,12 @@ class BootstrapHelper extends AppHelper {
 	
 		$html = '';
 		if (!empty($content) && isset($content[0])) {
-			$tableHeadArr = array_keys($content[0]);
-			unset($tableHeadArr['rowcolor']);
-			foreach ($content[0] as $cellKey => $cellValue ) {
+			$tableHeadArr = $content[0];
+			foreach ($tableHeadArr as $cellKey => $cellValue ) {
 				if ( !$params['ignore'] || !in_array($cellKey, $params['ignore']) ) {
-					$contentKeys[] = $cellKey;
+					if ( !in_array($cellKey, array('rowcolor')) ) {
+						$contentKeys[] = $cellKey;
+					}
 				}
 			}
 			$theadHtml = $this->Html->tag(
