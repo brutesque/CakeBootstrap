@@ -15,7 +15,7 @@ class NavbarHelper extends AppHelper {
 
 	private $params = array();
 	private $menus = array();
-	private $menuN = 'right';
+	private $group = 0;
 
 	public function beforeLayout ($layoutFile) {
 		Configure::write('navbar.menus', $this->menus);
@@ -49,8 +49,15 @@ class NavbarHelper extends AppHelper {
 	}
 
 	public function addItem ( $content = null, $params = null, $options = null) {
+		$params = array_merge(
+			array(
+				'group' => $this->group
+			), 
+			(array)$params
+		);
+
 		if (!is_null($content)) {
-			$this->menus[$this->menuN][] = $content;
+			$this->menus[$params['group']][] = $content;
 			return true;
 		} else {
 			return false;

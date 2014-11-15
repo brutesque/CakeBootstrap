@@ -876,6 +876,7 @@ class BootstrapHelper extends AppHelper {
 	public function formcreate ($model = false, $params = array(), $options = array() ) {
 		$params = array_merge(
 			array(
+				'url' => null, 
 				'model' => null, 
 				'type' => 'post' // post, get, file, put, delete
 			), 
@@ -883,6 +884,7 @@ class BootstrapHelper extends AppHelper {
 		);
 		$options = array_merge(
 			array(
+				'url' => $params['url'], 
 				'type' => $params['type'], 
 				'role' => 'form'
 			), 
@@ -915,7 +917,7 @@ class BootstrapHelper extends AppHelper {
 				$html .= $this->Html->div(
 					'form-group', 
 					$this->col(
-						$this->buttons($buttons, $params, $options), 
+						$this->buttons($buttons), 
 						array(
 							'size' => $params['size'], 
 							'offset' => $params['labelSize']
@@ -923,7 +925,7 @@ class BootstrapHelper extends AppHelper {
 					)
 				);
 			} else {
-				$html .= $this->buttons($buttons, $params, $options);
+				$html .= $this->buttons($buttons);
 			}
 		}
 
@@ -935,6 +937,7 @@ class BootstrapHelper extends AppHelper {
 	public function form ( $inputs, $params = array(), $options = array() ) {
 		$params = array_merge(
 			array(
+				'url' => null, 
 				'model' => false, 
 				'buttons' => false, 
 				'inline' => false, 
@@ -3126,22 +3129,39 @@ class BootstrapHelper extends AppHelper {
 		return $this->Html->tag('br');
 	}
 
-	public function header ( $content = null, $params = null, $options = null) {
+	public function section ( $content = null, $params = null, $options = null) {
 		$params = array_merge(
 			array(
+				'id' => null, 
+				'class' => null, 
+				'type' => 'section', // section, header, footer
 				'image' => null, 
 				'attachment' => 'scroll', 
-				'height' => '100%'
+				'height' => null, 
+				'style' => array()
 			), 
 			(array)$params
-		);		
+		);
+		$style = array_merge(
+			( $params['image'] ? array(
+				'background-image' => 'url(\'' . $params['image'] . '\')', 
+				'background-attachment' => $params['attachment'], 
+			) : array() ), 
+			( $params['height'] ? array(
+				'height' => ( is_numeric($params['height']) ? $params['height'] . 'px' : $params['height'] ), 
+				'min-height' => ( is_numeric($params['height']) ? $params['height'] . 'px' : $params['height'] )
+			) : array() ), 
+			( is_array($params['style']) ? $params['style'] : array() )
+		);
+
 		$options = array_merge(
 			array(
-				'style' => $this->Html->style(array(
-					'background-image' => 'url(\'' . $params['image'] . '\')', 
-					'background-attachment' => $params['attachment'], 
-					'min-height' => $params['height']
-				))
+				'id' => $params['id'], 
+				'class' => implode(' ', array_filter(array(
+					( !is_null($params['id']) ? $params['id'] .'-section' : null ), 
+					$params['class']
+				))), 
+				'style' => ( !empty($style) ? $this->Html->style($style) : null )
 			), 
 			(array)$options
 		);		
@@ -3149,14 +3169,41 @@ class BootstrapHelper extends AppHelper {
 		$html = '';
 		if ($content) {
 			$html .= $this->Html->tag(
-				'header', 
+				$params['type'], 
 				$content, 
 				$options
 			);
 			
 			Configure::write('navbar.params.type', 'scrolling');
-			Configure::read('navbar');
 		}
+		return $html;
+	}
+
+	public function header ( $content = null, $params = null, $options = null) {
+		$html = $this->section(
+			$content, 
+			array_merge(
+				$params, 
+				array(
+					'type' => 'header'
+				)
+			), 
+			$options
+		);
+		return $html;
+	}
+
+	public function footer ( $content = null, $params = null, $options = null) {
+		$html = $this->section(
+			$content, 
+			array_merge(
+				$params, 
+				array(
+					'type' => 'footer'
+				)
+			), 
+			$options
+		);
 		return $html;
 	}
 
